@@ -99,7 +99,7 @@ workflows:
             - pack-dev
       - orb-tools/test-in-builds:
           attach-workspace: true
-          orb-name: terraform
+          orb-name: git-shallow-clone
           test-steps:
             - test/local-test-build:
                 path: tests/basic_test.yml
@@ -110,7 +110,7 @@ workflows:
       # patch, minor, or major publishing
       - orb-tools/dev-promote-prod:
           name: dev-promote-patch
-          orb-name: mafuyuk/terraform
+          orb-name: guitarrapc/git-shallow-clone
           cleanup-tags: true
           requires: *prod-deploy_requires
           filters:
@@ -120,7 +120,7 @@ workflows:
               only: /master-patch.*/
       - orb-tools/dev-promote-prod:
           name: dev-promote-minor
-          orb-name: mafuyuk/terraform
+          orb-name: guitarrapc/git-shallow-clone
           release: minor
           cleanup-tags: true
           requires: *prod-deploy_requires
@@ -131,7 +131,7 @@ workflows:
               only: /master-minor.*/
       - orb-tools/dev-promote-prod:
           name: dev-promote-major
-          orb-name: mafuyuk/terraform
+          orb-name: guitarrapc/git-shallow-clone
           release: major
           cleanup-tags: true
           requires: *prod-deploy_requires
