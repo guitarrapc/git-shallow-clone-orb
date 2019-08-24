@@ -60,34 +60,12 @@ workflows:
           test-steps:
             - test/local-test-build:
                 path: tests/basic_test.yml
-          name: test_basic
-          requires:
-            - orb-tools/pack
-      - orb-tools/test-in-builds:
-          attach-workspace: true
-          orb-name: git-shallow-clone
-          test-steps:
             - test/local-test-build:
                 path: tests/change_depth.yml
-          name: test_change_depth
-          requires:
-            - orb-tools/pack
-      - orb-tools/test-in-builds:
-          attach-workspace: true
-          orb-name: git-shallow-clone
-          test-steps:
             - test/local-test-build:
                 path: tests/change_fetchdepth.yml
-          name: test_change_fetchdepth
-          requires:
-            - orb-tools/pack
-      - orb-tools/test-in-builds:
-          attach-workspace: true
-          orb-name: git-shallow-clone
-          test-steps:
             - test/local-test-build:
                 path: tests/alpine_test.yml
-          name: test_alpine
           requires:
             - orb-tools/pack
       - orb-tools/trigger-integration-workflow:
@@ -116,10 +94,10 @@ workflows:
           filters: *integration-master_filters
       - orb-tools/test-in-builds:
           attach-workspace: true
-          orb-name: terraform
+          orb-name: git-shallow-clone
           test-steps:
             - test/local-test-build:
-                path: tests/basic_test.yml
+                path: tests/default_test.yml
           name: test-commands-dev
           filters: *integration-dev_filters
           requires:

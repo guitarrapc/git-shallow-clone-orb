@@ -3,11 +3,11 @@
 
 ## Usage
 
-See the [orb registry listing](http://circleci.com/orbs/registry/orb/mafuyuk/terraform) for usage guidelines.
+See the [orb registry listing](http://circleci.com/orbs/registry/orb/guitarrapc/git-shallow-clone) for usage guidelines.
 
 ## Contributing
 
-We welcome [issues](https://github.com/mafuyuk/terraform-orb/issues) to and [pull requests](https://github.com/mafuyuk/terraform-orb/pulls) against this repository!
+We welcome [issues](https://github.com/guitarrapc/git-shallow-clone/issues) to and [pull requests](https://github.comguitarrapc/git-shallow-clone/pulls) against this repository!
 
 ## MEMO
 
