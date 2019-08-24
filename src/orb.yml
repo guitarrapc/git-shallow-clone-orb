@@ -1,0 +1,13 @@
+version: 2.1
+
+description: |
+  Shallow clone on CircleCI
+  https://github.com/guitarrapc/git-shallow-clone-orb
+
+## Requirements ##
+## - git
+
+## Work on
+## - [x] Alpine (apk add git)
+## - [x] Debian Strech
+## - [x] Ubuntu

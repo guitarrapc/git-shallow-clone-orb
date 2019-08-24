@@ -1,0 +1,56 @@
+version: 2.1
+
+orbs:
+  orb-tools: circleci/orb-tools@volatile
+
+# yaml anchor filters
+integration-dev_filters: &integration-dev_filters
+  branches:
+    ignore: /.*/
+  tags:
+    only: /integration-.*/
+
+integration-master_filters: &integration-master_filters
+  branches:
+    ignore: /.*/
+  tags:
+    only: /master-.*/
+
+prod-deploy_requires: &prod-deploy_requires
+  [test-commands-master]
+
+workflows:
+  lint_pack-validate_publish-dev:
+    jobs:
+      - orb-tools/lint
+      - orb-tools/pack:
+          requires:
+            - orb-tools/lint
+      - orb-tools/publish-dev:
+          orb-name: guitarrapc/git-shallow-clone
+          requires:
+            - orb-tools/pack
+      - orb-tools/test-in-builds:
+          attach-workspace: true
+          orb-name: git-shallow-clone
+          test-steps:
+            - test/local-test:
+                config_path: tests/basic.yml
+          name: basic-shallow-clone
+          requires: 
+            - orb-tools/pack
+      - orb-tools/trigger-integration-workflow:
+          ssh-fingerprints: SSH_KEY
+          requires:
+            - orb-tools/publish-dev
+          filters:
+            branches:
+              ignore: master
+      - orb-tools/trigger-integration-workflow:
+          ssh-fingerprints: SSH_KEY
+          tag: master
+          requires:
+            - orb-tools/publish-dev
+          filters:
+            branches:
+              only: master
