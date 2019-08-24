@@ -97,7 +97,13 @@ workflows:
           orb-name: git-shallow-clone
           test-steps:
             - test/local-test-build:
-                path: tests/default_test.yml
+                path: tests/basic_test.yml
+            - test/local-test-build:
+                path: tests/change_depth.yml
+            - test/local-test-build:
+                path: tests/change_fetchdepth.yml
+            - test/local-test-build:
+                path: tests/alpine_test.yml
           name: test-commands-dev
           filters: *integration-dev_filters
           requires:
