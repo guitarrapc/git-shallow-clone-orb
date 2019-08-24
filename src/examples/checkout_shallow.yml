@@ -1,12 +1,17 @@
 description: |
   git shallow clone instead of checkout.
-  You can change depth like followings.
+  You can change depth and fetch_depth, but I do recommend set fetch_depth lager than 1.
+  If you set fetch_depth 1, you will find build failed when new commit was pushed.
+  fetch_depth default is 10 to cover re-build after several commit.
+  # default
   - git/checkout_shallow:
       depth: 1
       fetch_depth: 10
+  # set fetch_depth: 1 for minimum depth
   - git/checkout_shallow:
       depth: 1
       fetch_depth: 1
+  # change depth:5 for some reason.
   - git/checkout_shallow:
       depth: 5
       fetch_depth: 5
