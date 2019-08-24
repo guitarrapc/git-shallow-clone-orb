@@ -77,3 +77,62 @@ workflows:
           filters:
             branches:
               only: master
+
+  integration-tests_prod-release:
+    jobs:
+      - orb-tools/pack:
+          name: pack-dev
+          filters: *integration-dev_filters
+      - orb-tools/pack:
+          name: pack-master
+          filters: *integration-master_filters
+      - orb-tools/test-in-builds:
+          attach-workspace: true
+          orb-name: terraform
+          test-steps:
+            - test/local-test-build:
+                path: tests/basic_test.yml
+          name: test-commands-dev
+          filters: *integration-dev_filters
+          requires:
+            - pack-dev
+      - orb-tools/test-in-builds:
+          attach-workspace: true
+          orb-name: terraform
+          test-steps:
+            - test/local-test-build:
+                path: tests/basic_test.yml
+          name: test-commands-master
+          filters: *integration-master_filters
+          requires:
+            - pack-master
+      # patch, minor, or major publishing
+      - orb-tools/dev-promote-prod:
+          name: dev-promote-patch
+          orb-name: mafuyuk/terraform
+          requires: *prod-deploy_requires
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /master-patch.*/
+      - orb-tools/dev-promote-prod:
+          name: dev-promote-minor
+          orb-name: mafuyuk/terraform
+          release: minor
+          requires: *prod-deploy_requires
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /master-minor.*/
+      - orb-tools/dev-promote-prod:
+          name: dev-promote-major
+          orb-name: mafuyuk/terraform
+          release: major
+          requires: *prod-deploy_requires
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /master-major.*/
