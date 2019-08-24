@@ -12,10 +12,10 @@ We welcome [issues](https://github.com/mafuyuk/terraform-orb/issues) to and [pul
 ## MEMO
 
 * normal push without specific pattern of a tag, dev build will run.
-* Specific tag for production release
+* Don't need push tag for production release, but merge to master is enough.
     * master-major.v1.0.0
     * master-minor.v1.1.0
-    * master-path.v1.1.1
+    * master-patch.v1.1.1
 
 > NOTE: `orb-tools/dev-promote-prod` cleanup-tags is set to true to remove `master.*` tags on publish orb to the production.
 
@@ -39,11 +39,11 @@ $ circleci orb validate orb.yml
 publish orb to the dev.
 
 ```
-$ circleci orb publish orb.yml guitarrapc/git-shallow-clone@dev:first
+$ circleci orb publish orb.yml guitarrapc/git-shallow-clone@dev:0.x.0
 ```
 
 public orb to the production.
 
 ```
-$ circleci orb publish promote guitarrapc/git-shallow-clone@0.0.1
+$ circleci orb publish promote guitarrapc/git-shallow-clone@0.x.0
 ```
