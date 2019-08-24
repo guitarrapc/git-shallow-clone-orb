@@ -34,8 +34,8 @@ workflows:
           attach-workspace: true
           orb-name: git-shallow-clone
           test-steps:
-            - test/local-test:
-                config_path: tests/basic.yml
+            - orb-tools/local-test-build:
+                test-config-location: tests/basic.yml
           name: basic-shallow-clone
           requires: 
             - orb-tools/pack
