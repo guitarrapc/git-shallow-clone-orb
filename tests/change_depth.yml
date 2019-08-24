@@ -9,3 +9,5 @@ jobs:
     working_directory: ~/test-shallow-clone-checkout
     steps:
       - git-shallow-clone/checkout_shallow
+          depth: 5
+          fetch_depth: 10

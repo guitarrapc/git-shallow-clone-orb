@@ -1,0 +1,23 @@
+description: |
+  git shallow clone instead of checkout.
+  You can change depth like followings.
+  - git/checkout_shallow
+      depth: 1
+      fetch_depth: 10
+  - git/checkout_shallow
+      depth: 1
+      fetch_depth: 1
+  - git/checkout_shallow
+      depth: 5
+      fetch_depth: 5
+
+usage:
+  version: 2.1
+
+  orbs:
+    git: guitarrapc/git-shallow-clone@0.1.0
+
+  workflows:
+    build:
+      jobs:
+        - git/checkout_shallow

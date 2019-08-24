@@ -1,4 +1,4 @@
-description: git shallow clone source code using. Support Alpine, Ubuntu, Debian and others.
+description: checkout with git shallow clone. Support Alpine, Ubuntu, Debian and others.
 parameters:
   depth:
     description: >
