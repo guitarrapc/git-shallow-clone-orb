@@ -37,7 +37,7 @@ workflows:
             - orb-tools/local-test-build:
                 test-config-location: tests/basic.yml
           name: basic-shallow-clone
-          requires: 
+          requires:
             - orb-tools/pack
       - orb-tools/trigger-integration-workflow:
           ssh-fingerprints: SSH_KEY
