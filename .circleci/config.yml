@@ -2,6 +2,29 @@ version: 2.1
 
 orbs:
   orb-tools: circleci/orb-tools@volatile
+  test:
+    # ref: https://github.com/ganta/git-orb/blob/master/.circleci/config.yml
+    # Workaround for passing a SSH key with orb-tools/local-test-build command
+    # https://github.com/CircleCI-Public/orb-tools-orb/blob/330d11bb0cdef3c2f24cb4e2c595ca01e55bfd8c/src/%40orb.yml#L107-L134
+    commands:
+      local-test-build:
+        parameters:
+          path:
+            type: string
+        steps:
+          - run: cp << parameters.path >> .config/config.yml
+          - run: mkdir -pv $(dirname _config.yml)
+          - run: circleci config pack .config > _config.yml
+          - run: cat _config.yml
+          - run: circleci config process _config.yml > config.yml
+          - run:
+              command: |
+                # Cannot access "~/.ssh" from working directory.
+                cp ~/.ssh/id_rsa ./id_rsa
+                circleci local execute --checkout-key ./id_rsa -c config.yml | \
+                  tee local_build_output.txt /dev/stderr | \
+                  tail -n 1 | \
+                  grep "Success"
 
 # yaml anchor filters
 integration-dev_filters: &integration-dev_filters
@@ -34,8 +57,8 @@ workflows:
           attach-workspace: true
           orb-name: git-shallow-clone
           test-steps:
-            - orb-tools/local-test-build:
-                test-config-location: tests/basic.yml
+            - test/local-test-build:
+                path: tests/basic_test.yml
           name: basic-shallow-clone
           requires:
             - orb-tools/pack
