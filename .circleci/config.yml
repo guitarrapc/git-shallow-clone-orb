@@ -60,7 +60,7 @@ workflows:
           test-steps:
             - test/local-test-build:
                 path: tests/basic_test.yml
-          name: basic-shallow-clone
+          name: test_basic
           requires:
             - orb-tools/pack
       - orb-tools/test-in-builds:
@@ -69,7 +69,7 @@ workflows:
           test-steps:
             - test/local-test-build:
                 path: tests/change_depth.yml
-          name: basic-shallow-clone
+          name: test_change_depth
           requires:
             - orb-tools/pack
       - orb-tools/test-in-builds:
@@ -78,7 +78,7 @@ workflows:
           test-steps:
             - test/local-test-build:
                 path: tests/change_fetchdepth.yml
-          name: basic-shallow-clone
+          name: test_change_fetchdepth
           requires:
             - orb-tools/pack
       - orb-tools/trigger-integration-workflow:
