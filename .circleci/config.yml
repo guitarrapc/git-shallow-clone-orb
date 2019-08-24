@@ -12,11 +12,11 @@ orbs:
           path:
             type: string
         steps:
-          - run: cp << parameters.path >> .config/config.yml
-          - run: mkdir -pv $(dirname _config.yml)
-          - run: circleci config pack .config > _config.yml
-          - run: cat _config.yml
-          - run: circleci config process _config.yml > config.yml
+          - run: cp << parameters.path >> tmp-config-src/config.yml
+          - run: mkdir -pv $(dirname tmp-config-src.yml)
+          - run: circleci config pack tmp-config-src > uncompiled-config.yml
+          - run: cat uncompiled-config.yml
+          - run: circleci config process uncompiled-config.yml > config.yml
           - run:
               command: |
                 # Cannot access "~/.ssh" from working directory.
@@ -63,14 +63,14 @@ workflows:
           requires:
             - orb-tools/pack
       - orb-tools/trigger-integration-workflow:
-          ssh-fingerprints: SSH_KEY
+          ssh-fingerprints: 47:ab:89:32:ac:86:9e:37:0b:bf:b8:a0:d6:da:9e:3b
           requires:
             - orb-tools/publish-dev
           filters:
             branches:
               ignore: master
       - orb-tools/trigger-integration-workflow:
-          ssh-fingerprints: SSH_KEY
+          ssh-fingerprints: 47:ab:89:32:ac:86:9e:37:0b:bf:b8:a0:d6:da:9e:3b
           tag: master
           requires:
             - orb-tools/publish-dev
