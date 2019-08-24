@@ -66,6 +66,8 @@ workflows:
                 path: tests/change_fetchdepth.yml
             - test/local-test-build:
                 path: tests/alpine_test.yml
+            - test/local-test-build:
+                path: tests/alpine_test_noopenssh.yml
           requires:
             - orb-tools/pack
       - orb-tools/trigger-integration-workflow:
@@ -104,6 +106,8 @@ workflows:
                 path: tests/change_fetchdepth.yml
             - test/local-test-build:
                 path: tests/alpine_test.yml
+            - test/local-test-build:
+                path: tests/alpine_test_noopenssh.yml
           name: test-commands-dev
           filters: *integration-dev_filters
           requires:
