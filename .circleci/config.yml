@@ -2,6 +2,7 @@ version: 2.1
 
 orbs:
   orb-tools: circleci/orb-tools@volatile
+  git-shallow-clone: 'guitarrapc/git-shallow-clone@dev:alpha'
   test:
     # ref: https://github.com/ganta/git-orb/blob/master/.circleci/config.yml
     # Workaround for passing a SSH key with orb-tools/local-test-build command
@@ -110,6 +111,7 @@ workflows:
       - orb-tools/dev-promote-prod:
           name: dev-promote-patch
           orb-name: mafuyuk/terraform
+          cleanup-tags: true
           requires: *prod-deploy_requires
           filters:
             branches:
@@ -120,6 +122,7 @@ workflows:
           name: dev-promote-minor
           orb-name: mafuyuk/terraform
           release: minor
+          cleanup-tags: true
           requires: *prod-deploy_requires
           filters:
             branches:
@@ -130,6 +133,7 @@ workflows:
           name: dev-promote-major
           orb-name: mafuyuk/terraform
           release: major
+          cleanup-tags: true
           requires: *prod-deploy_requires
           filters:
             branches:
