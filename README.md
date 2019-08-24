@@ -7,7 +7,7 @@ See the [orb registry listing](http://circleci.com/orbs/registry/orb/guitarrapc/
 
 ## Contributing
 
-We welcome [issues](https://github.com/guitarrapc/git-shallow-clone/issues) to and [pull requests](https://github.comguitarrapc/git-shallow-clone/pulls) against this repository!
+We welcome [issues](https://github.com/guitarrapc/git-shallow-clone-orb/issues) to and [pull requests](https://github.com/guitarrapc/git-shallow-clone-orb/pulls) against this repository!
 
 ## MEMO
 
