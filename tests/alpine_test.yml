@@ -5,7 +5,8 @@ orbs:
 
 jobs:
   build:
-    executor: cli/alpine
+    docker:
+      - image: circleci/circleci-cli:alpine
     working_directory: ~/test-shallow-clone-checkout
     steps:
       - run: apk update && apk add openssh git
