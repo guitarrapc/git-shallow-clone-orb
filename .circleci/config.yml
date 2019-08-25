@@ -54,22 +54,6 @@ workflows:
           orb-name: guitarrapc/git-shallow-clone
           requires:
             - orb-tools/pack
-      - orb-tools/test-in-builds:
-          attach-workspace: true
-          orb-name: git-shallow-clone
-          test-steps:
-            - test/local-test-build:
-                path: tests/basic_test.yml
-            - test/local-test-build:
-                path: tests/change_depth.yml
-            - test/local-test-build:
-                path: tests/change_fetchdepth.yml
-            - test/local-test-build:
-                path: tests/alpine_test.yml
-            - test/local-test-build:
-                path: tests/alpine_test_noopenssh.yml
-          requires:
-            - orb-tools/pack
       - orb-tools/trigger-integration-workflow:
           ssh-fingerprints: 47:ab:89:32:ac:86:9e:37:0b:bf:b8:a0:d6:da:9e:3b
           requires:
