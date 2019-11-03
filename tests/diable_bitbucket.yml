@@ -9,4 +9,4 @@ jobs:
     working_directory: ~/test-shallow-clone-checkout
     steps:
       - git-shallow-clone/checkout_shallow:
-          use_bitbucket: false
+          keyscan_bitbucket: false

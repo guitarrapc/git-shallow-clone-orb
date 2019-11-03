@@ -12,13 +12,13 @@ parameters:
       Pass more number then depth when you want to check futher commit history.
     type: integer
     default: 10
-  use_github:
+  keyscan_github:
     description: >
       Use GitHub as source repogitry.
       Pass false to skip github ssh-rsa search.
     type: boolean
     default: true
-  use_bitbucket:
+  keyscan_bitbucket:
     description: >
       Use BitBucket as source repogitry.
       Pass false to skip bitbucket ssh-rsa search.
@@ -41,11 +41,11 @@ steps:
         mkdir -p ~/.ssh
         if [ -x "$(command -v ssh-keyscan)" ]
         then
-          if [ ${use_github} == "true" ]
+          if [ "${keyscan_github}" == "true" ]
           then
             ssh-keyscan -H github.com >> ~/.ssh/known_hosts
           fi
-          if [ ${use_bitbucket} == "true" ]
+          if [ "${keyscan_bitbucket}" == "true" ]
           then
             ssh-keyscan -H bitbucket.org >> ~/.ssh/known_hosts
           fi

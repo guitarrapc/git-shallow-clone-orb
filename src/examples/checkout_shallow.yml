@@ -10,6 +10,9 @@ description: |
   - git/checkout_shallow:
       depth: 5
       fetch_depth: 5
+  # disable bitbucket ssh-rsa key check
+  - git/checkout_shallow:
+      keyscan_bitbucket: false
 
 usage:
   version: 2.1
