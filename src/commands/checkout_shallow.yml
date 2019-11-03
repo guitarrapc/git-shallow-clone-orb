@@ -76,25 +76,31 @@ steps:
         if [ -n "$CIRCLE_TAG" ]
         then
           # tag
+          echo "git fetch --depth << parameters.fetch_depth >> --force origin refs/tags/${CIRCLE_TAG}"
           git fetch --depth << parameters.fetch_depth >> --force origin "refs/tags/${CIRCLE_TAG}"
         elif [[ $(echo $CIRCLE_BRANCH | grep -e ^pull\/*) ]] # sh version of bash `elif [[ "$CIRCLE_BRANCH" =~ ^pull\/* ]]`
         then
           # pull request
+          echo "git fetch --depth << parameters.fetch_depth >> --force origin ${CIRCLE_BRANCH}/head:remotes/origin/${CIRCLE_BRANCH}"
           git fetch --depth << parameters.fetch_depth >> --force origin "${CIRCLE_BRANCH}/head:remotes/origin/${CIRCLE_BRANCH}"
         else
           # others
+          echo "git fetch --depth=<< parameters.fetch_depth >> --force origin $CIRCLE_BRANCH:remotes/origin/$CIRCLE_BRANCH"
           git fetch --depth=<< parameters.fetch_depth >> --force origin "$CIRCLE_BRANCH:remotes/origin/$CIRCLE_BRANCH"
         fi
 
         # Check the commit ID of the checked out code
         if [ -n "$CIRCLE_TAG" ]
         then
+          echo "git reset --hard $CIRCLE_SHA1 && git checkout -q $CIRCLE_BRANCH"
           git reset --hard "$CIRCLE_SHA1"
           git checkout -q "$CIRCLE_TAG"
-        elif [ -n "$CIRCLE_BRANCH" ] && [ "$CIRCLE_BRANCH" != "HEAD" ]
+        elif [ -n "$CIRCLE_BRANCH" ]
         then
+          echo "git reset --hard $CIRCLE_SHA1 && git checkout -q -B $CIRCLE_BRANCH"
           git reset --hard "$CIRCLE_SHA1"
           git checkout -q -B "$CIRCLE_BRANCH"
         fi
 
+        echo "git reset --hard $CIRCLE_SHA1"
         git reset --hard "$CIRCLE_SHA1"
