@@ -18,6 +18,9 @@ We welcome [issues](https://github.com/guitarrapc/git-shallow-clone-orb/issues) 
     * master-patch.v1.1.1
 
 > NOTE: `orb-tools/dev-promote-prod` cleanup-tags is set to true to remove `master.*` tags on publish orb to the production.
+* Ingration test will failed until PR opened or merged to master.
+
+> enabled `Only build pull request` option.
 
 ## Basic orb setup
 
