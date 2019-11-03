@@ -98,7 +98,10 @@ steps:
         elif [ -n "$CIRCLE_BRANCH" ]
         then
           echo "git reset --hard $CIRCLE_SHA1 && git checkout -q -B $CIRCLE_BRANCH"
+          git log
+          echo "git reset --hard $CIRCLE_SHA1"
           git reset --hard "$CIRCLE_SHA1"
+          echo "git checkout -q -B $CIRCLE_BRANCH"
           git checkout -q -B "$CIRCLE_BRANCH"
         fi
 
