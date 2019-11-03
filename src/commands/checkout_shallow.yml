@@ -14,14 +14,12 @@ parameters:
     default: 10
   keyscan_github:
     description: >
-      Use GitHub as source repogitry.
-      Pass false to skip github ssh-rsa search.
+      Pass `true` to dynamically get ssh-rsa from `github.com`.
     type: boolean
     default: false
   keyscan_bitbucket:
     description: >
-      Use BitBucket as source repogitry.
-      Pass false to skip bitbucket ssh-rsa search.
+      Pass `true` to dynamically get ssh-rsa from `bitbucket.org`.
     type: boolean
     default: false
 steps:
