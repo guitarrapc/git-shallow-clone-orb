@@ -19,10 +19,11 @@ orbs:
           - run: cat uncompiled-config.yml
           - run: circleci config process uncompiled-config.yml > config.yml
           # Cannot access "~/.ssh" from working directory.
+          # pass spin up env's CIRCLE_TAG to local circleci command.
           - run:
               command: |
                 cp ~/.ssh/id_rsa ./id_rsa
-                circleci local execute --checkout-key ./id_rsa -c config.yml | \
+                circleci local execute --checkout-key ./id_rsa -c config.yml -e CIRCLE_TAG=${CIRCLE_TAG} | \
                   tee local_build_output.txt /dev/stderr | \
                   tail -n 1 | \
                   grep "Success"
@@ -90,7 +91,9 @@ workflows:
             - test/local-test-build:
                 path: tests/alpine_test_noopenssh.yml
             - test/local-test-build:
-                path: tests/diable_bitbucket.yml
+                path: tests/enable_github_keyscan.yml
+            - test/local-test-build:
+                path: tests/enable_bitbucket_keyscan.yml
           name: test-commands-dev
           filters: *integration-dev_filters
           requires:
@@ -113,7 +116,9 @@ workflows:
             - test/local-test-build:
                 path: tests/alpine_test_noopenssh.yml
             - test/local-test-build:
-                path: tests/diable_bitbucket.yml
+                path: tests/diable_github_keyscan.yml
+            - test/local-test-build:
+                path: tests/diable_bitbucket_keyscan.yml
           name: test-commands-master
           filters: *integration-master_filters
           requires:
