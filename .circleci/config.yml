@@ -91,9 +91,9 @@ workflows:
             - test/local-test-build:
                 path: tests/alpine_test_noopenssh.yml
             - test/local-test-build:
-                path: tests/diable_github_keyscan.yml
+                path: tests/enable_github_keyscan.yml
             - test/local-test-build:
-                path: tests/diable_bitbucket_keyscan.yml
+                path: tests/enable_bitbucket_keyscan.yml
           name: test-commands-dev
           filters: *integration-dev_filters
           requires:

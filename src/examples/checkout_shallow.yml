@@ -3,6 +3,7 @@ description: |
   You can change depth and fetch_depth, but I do recommend set fetch_depth lager than 1.
   If you set fetch_depth 1, you will find build failed when new commit was pushed.
   fetch_depth default is 10 to cover re-build after several commit.
+  Default github.com and bitbucket.org ssh key will not scan.
   # set fetch_depth: 1 to minimize fetch time
   - git/checkout_shallow:
       fetch_depth: 1
