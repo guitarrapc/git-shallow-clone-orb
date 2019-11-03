@@ -10,6 +10,12 @@ description: |
   - git/checkout_shallow:
       depth: 5
       fetch_depth: 5
+  # enable github ssh key scan
+  - git/checkout_shallow:
+      keyscan_github: true
+  # enable bitbucket ssh key scan
+  - git/checkout_shallow:
+      keyscan_bitbucket: true
 
 usage:
   version: 2.1

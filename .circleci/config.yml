@@ -18,9 +18,9 @@ orbs:
           - run: circleci config pack tmp-config-src > uncompiled-config.yml
           - run: cat uncompiled-config.yml
           - run: circleci config process uncompiled-config.yml > config.yml
+          # Cannot access "~/.ssh" from working directory.
           - run:
               command: |
-                # Cannot access "~/.ssh" from working directory.
                 cp ~/.ssh/id_rsa ./id_rsa
                 circleci local execute --checkout-key ./id_rsa -c config.yml | \
                   tee local_build_output.txt /dev/stderr | \
@@ -75,6 +75,26 @@ workflows:
       - orb-tools/pack:
           name: pack-dev
           filters: *integration-dev_filters
+      - orb-tools/test-in-builds:
+          attach-workspace: true
+          orb-name: git-shallow-clone
+          test-steps:
+            - test/local-test-build:
+                path: tests/basic_test.yml
+            - test/local-test-build:
+                path: tests/change_depth.yml
+            - test/local-test-build:
+                path: tests/change_fetchdepth.yml
+            - test/local-test-build:
+                path: tests/alpine_test.yml
+            - test/local-test-build:
+                path: tests/alpine_test_noopenssh.yml
+            - test/local-test-build:
+                path: tests/diable_bitbucket.yml
+          name: test-commands-dev
+          filters: *integration-dev_filters
+          requires:
+            - pack-dev
       - orb-tools/pack:
           name: pack-master
           filters: *integration-master_filters
@@ -92,24 +112,8 @@ workflows:
                 path: tests/alpine_test.yml
             - test/local-test-build:
                 path: tests/alpine_test_noopenssh.yml
-          name: test-commands-dev
-          filters: *integration-dev_filters
-          requires:
-            - pack-dev
-      - orb-tools/test-in-builds:
-          attach-workspace: true
-          orb-name: git-shallow-clone
-          test-steps:
             - test/local-test-build:
-                path: tests/basic_test.yml
-            - test/local-test-build:
-                path: tests/change_depth.yml
-            - test/local-test-build:
-                path: tests/change_fetchdepth.yml
-            - test/local-test-build:
-                path: tests/alpine_test.yml
-            - test/local-test-build:
-                path: tests/alpine_test_noopenssh.yml
+                path: tests/diable_bitbucket.yml
           name: test-commands-master
           filters: *integration-master_filters
           requires:
