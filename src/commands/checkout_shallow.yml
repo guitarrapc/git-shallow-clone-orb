@@ -17,13 +17,13 @@ parameters:
       Use GitHub as source repogitry.
       Pass false to skip github ssh-rsa search.
     type: boolean
-    default: true
+    default: false
   keyscan_bitbucket:
     description: >
       Use BitBucket as source repogitry.
       Pass false to skip bitbucket ssh-rsa search.
     type: boolean
-    default: true
+    default: false
 steps:
   - run:
       name: Checkout code shallow
