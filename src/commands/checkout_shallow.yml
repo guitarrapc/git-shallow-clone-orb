@@ -91,7 +91,7 @@ steps:
         then
           git reset --hard "$CIRCLE_SHA1"
           git checkout -q "$CIRCLE_TAG"
-        elif [ -n "$CIRCLE_BRANCH" ]
+        elif [ -n "$CIRCLE_BRANCH" ] && [ "$CIRCLE_BRANCH" != "head" ]
         then
           git reset --hard "$CIRCLE_SHA1"
           git checkout -q -B "$CIRCLE_BRANCH"
