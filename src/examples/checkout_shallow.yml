@@ -1,6 +1,6 @@
 description: |
   git shallow clone instead of checkout.
-  You can change depth and fetch_depth, but I do recommend set fetch_depth lager than 1.
+  You can change depth and fetch_depth, but I do recommend set fetch_depth larger than 1.
   If you set fetch_depth 1, you will find build failed when new commit was pushed.
   fetch_depth default is 10 to cover re-build after several commit.
   Default github.com and bitbucket.org ssh key will not scan.
@@ -17,6 +17,9 @@ description: |
   # enable bitbucket ssh key scan
   - git/checkout_shallow:
       keyscan_bitbucket: true
+  # clone the repository to src
+  - git/checkout_shallow:
+      path: src
 
 usage:
   version: 2.1
