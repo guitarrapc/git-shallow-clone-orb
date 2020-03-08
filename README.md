@@ -12,7 +12,7 @@ We welcome [issues](https://github.com/guitarrapc/git-shallow-clone-orb/issues) 
 ## MEMO
 
 * normal push without specific pattern of a tag, dev build will run.
-* Don't need push tag for production release, but merge to master is enough.
+* push tag for production release.
     * master-major.v1.0.0
     * master-minor.v1.1.0
     * master-patch.v1.1.1
