@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  orb-tools: circleci/orb-tools@volatile
+  orb-tools: circleci/orb-tools@8.27.3
   test:
     # ref: https://github.com/ganta/git-orb/blob/master/.circleci/config.yml
     # Workaround for passing a SSH key with orb-tools/local-test-build command
