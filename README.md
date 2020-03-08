@@ -33,17 +33,20 @@ $ circleci orb create guitarrapc/git-shallow-clone
 validate before publish.
 
 ```
+$ cd ./src
 $ circleci orb validate orb.yml
 ```
 
 publish orb to the dev.
 
 ```
+$ cd ./src
 $ circleci orb publish orb.yml guitarrapc/git-shallow-clone@dev:0.x.0
 ```
 
-public orb to the production.
+publish orb to the production.
 
 ```
+$ cd ./src
 $ circleci orb publish promote guitarrapc/git-shallow-clone@0.x.0
 ```

@@ -87,6 +87,8 @@ workflows:
             - test/local-test-build:
                 path: tests/change_fetchdepth.yml
             - test/local-test-build:
+                path: tests/change_path.yml
+            - test/local-test-build:
                 path: tests/alpine_test.yml
             - test/local-test-build:
                 path: tests/alpine_test_noopenssh.yml
@@ -111,6 +113,8 @@ workflows:
                 path: tests/change_depth.yml
             - test/local-test-build:
                 path: tests/change_fetchdepth.yml
+            - test/local-test-build:
+                path: tests/change_path.yml
             - test/local-test-build:
                 path: tests/alpine_test.yml
             - test/local-test-build:
