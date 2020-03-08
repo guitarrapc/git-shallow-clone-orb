@@ -37,6 +37,14 @@ $ cd ./src
 $ circleci orb validate orb.yml
 ```
 
+publish orb to the alpha.
+
+```
+$ cd ./src
+$ circleci orb publish orb.yml guitarrapc/git-shallow-clone@dev:alpha
+```
+
+
 publish orb to the dev.
 
 ```

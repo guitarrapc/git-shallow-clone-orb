@@ -2,7 +2,6 @@ version: 2.1
 
 orbs:
   orb-tools: circleci/orb-tools@volatile
-  git-shallow-clone: 'guitarrapc/git-shallow-clone@dev:alpha'
   test:
     # ref: https://github.com/ganta/git-orb/blob/master/.circleci/config.yml
     # Workaround for passing a SSH key with orb-tools/local-test-build command
