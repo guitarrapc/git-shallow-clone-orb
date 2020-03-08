@@ -17,6 +17,9 @@ description: |
   # enable bitbucket ssh key scan
   - git/checkout_shallow:
       keyscan_bitbucket: true
+  # clone the repository to src
+  - git/checkout_shallow:
+      path: src
 
 usage:
   version: 2.1
