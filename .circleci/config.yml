@@ -54,6 +54,10 @@ workflows:
           orb-name: guitarrapc/git-shallow-clone
           requires:
             - orb-tools/pack
+          filters:
+            branches:
+              ignore:
+                - /^pull\/.*/
       - orb-tools/trigger-integration-workflow:
           ssh-fingerprints: 47:ab:89:32:ac:86:9e:37:0b:bf:b8:a0:d6:da:9e:3b
           requires:
