@@ -17,7 +17,7 @@ parameters:
     type: string
     default: ""
     description: >
-      git clone options you want to add. like `options: '--shallow-since "5 days ago"'
+      git clone options you want to add. like `options: '--shallow-since "5 days ago" --verbose'
   keyscan_github:
     description: >
       Pass `true` to dynamically get ssh-rsa from `github.com`.
