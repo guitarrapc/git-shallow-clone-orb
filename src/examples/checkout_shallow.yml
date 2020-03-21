@@ -11,6 +11,9 @@ description: |
   - git/checkout_shallow:
       depth: 5
       fetch_depth: 5
+  # set --shallow-since in clone_options
+  - git/checkout_shallow:
+      clone_options: '--shallow-since "5 days ago"'
   # enable github ssh key scan
   - git/checkout_shallow:
       keyscan_github: true

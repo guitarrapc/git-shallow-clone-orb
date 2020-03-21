@@ -4,6 +4,7 @@ parameters:
     description: >
       Limit fetch depth to the specified number of commit from a remote branch history.
       Refer git fetch documentation for more information.
+      If the parameter "clone_options" is set, this parameter is ignored.
     type: integer
     default: 1
   fetch_depth:
@@ -12,6 +13,11 @@ parameters:
       Pass more number then depth when you want to check futher commit history.
     type: integer
     default: 10
+  clone_options:
+    type: string
+    default: ""
+    description: >
+      git clone options you want to add. like `options: '--shallow-since "5 days ago"'
   keyscan_github:
     description: >
       Pass `true` to dynamically get ssh-rsa from `github.com`.
@@ -72,8 +78,13 @@ steps:
         git config --global url."ssh://git@github.com".insteadOf "https://github.com" || true
         git config --global gc.auto 0 || true
 
+        clone_opts="--depth << parameters.depth >>"
         # checkout
-        git clone --depth << parameters.depth >> $CIRCLE_REPOSITORY_URL "<< parameters.path >>"
+        if [ -n "<< parameters.clone_options >>" ]
+        then
+          clone_opts="<< parameters.clone_options >>"
+        fi
+        git clone $clone_opts $CIRCLE_REPOSITORY_URL "<< parameters.path >>"
         cd "<< parameters.path >>"
 
         # Fetch remote and check the commit ID of the checked out code
