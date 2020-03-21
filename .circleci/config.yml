@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  orb-tools: circleci/orb-tools@8.27.4
+  orb-tools: circleci/orb-tools@8.27.6
   test:
     # ref: https://github.com/ganta/git-orb/blob/master/.circleci/config.yml
     # Workaround for passing a SSH key with orb-tools/local-test-build command
@@ -132,7 +132,6 @@ workflows:
       - orb-tools/dev-promote-prod:
           name: dev-promote-patch
           orb-name: guitarrapc/git-shallow-clone
-          cleanup-tags: true
           requires: *prod-deploy_requires
           filters:
             branches:
@@ -143,7 +142,6 @@ workflows:
           name: dev-promote-minor
           orb-name: guitarrapc/git-shallow-clone
           release: minor
-          cleanup-tags: true
           requires: *prod-deploy_requires
           filters:
             branches:
@@ -154,7 +152,6 @@ workflows:
           name: dev-promote-major
           orb-name: guitarrapc/git-shallow-clone
           release: major
-          cleanup-tags: true
           requires: *prod-deploy_requires
           filters:
             branches:
