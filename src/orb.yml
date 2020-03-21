@@ -2,7 +2,10 @@ version: 2.1
 
 description: |
   Shallow clone on CircleCI, support tag, pr and other.
-  https://github.com/guitarrapc/git-shallow-clone-orb
+
+# This information will be displayed in the orb registry and is not mandatory.
+display:
+  source_url: https://github.com/guitarrapc/git-shallow-clone-orb
 
 ## Requirements ##
 ## - git
