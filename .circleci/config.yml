@@ -60,7 +60,9 @@ workflows:
             - orb-tools/publish-dev
           filters:
             branches:
-              ignore: master
+              ignore:
+                - master
+                - /pull.*/
       - orb-tools/trigger-integration-workflow:
           ssh-fingerprints: 47:ab:89:32:ac:86:9e:37:0b:bf:b8:a0:d6:da:9e:3b
           tag: master
