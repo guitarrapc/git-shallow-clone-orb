@@ -11,6 +11,7 @@ parameters:
     description: >
       Addtional fetch depth fetch depth to the specified number of commit from a remote branch history.
       Pass more number then depth when you want to check futher commit history.
+      If the parameter "fetch_options" is set, this parameter is ignored.
     type: integer
     default: 10
   clone_options:
@@ -18,6 +19,13 @@ parameters:
     default: ""
     description: >
       git clone options you want to add such as '--depth 1 --verbose' and '--shallow-since "5 days ago"'
+  fetch_options:
+    type: string
+    default: ""
+    description: >
+      git fetch options you want to add such as '--depth 1 --verbose' and '--shallow-since "5 days ago"'
+      Don't set '--force' option because it is set automatically.
+      And in case of pull request, '-t' is also set automatically.
   keyscan_github:
     description: >
       Pass `true` to dynamically get ssh-rsa from `github.com`.
@@ -87,18 +95,23 @@ steps:
         git clone $clone_opts $CIRCLE_REPOSITORY_URL "<< parameters.path >>"
         cd "<< parameters.path >>"
 
+        fetch_opts="--depth << parameters.fetch_depth >>"
+        if [ -n "<< parameters.fetch_options >>" ]
+        then
+          fetch_opts="<< parameters.fetch_options >>"
+        fi
         # Fetch remote and check the commit ID of the checked out code
         if [ -n "$CIRCLE_TAG" ]
         then
           # tag
-          git fetch -t --depth << parameters.fetch_depth >> --force origin "refs/tags/${CIRCLE_TAG}"
+          git fetch -t $fetch_opts --force origin "refs/tags/${CIRCLE_TAG}"
         elif [[ $(echo $CIRCLE_BRANCH | grep -e ^pull\/*) ]] # sh version of bash `elif [[ "$CIRCLE_BRANCH" =~ ^pull\/* ]]`
         then
           # pull request
-          git fetch --depth << parameters.fetch_depth >> --force origin "${CIRCLE_BRANCH}/head:remotes/origin/${CIRCLE_BRANCH}"
+          git fetch $fetch_opts --force origin "${CIRCLE_BRANCH}/head:remotes/origin/${CIRCLE_BRANCH}"
         else
           # others
-          git fetch --depth=<< parameters.fetch_depth >> --force origin "$CIRCLE_BRANCH:remotes/origin/$CIRCLE_BRANCH"
+          git fetch $fetch_opts --force origin "$CIRCLE_BRANCH:remotes/origin/$CIRCLE_BRANCH"
         fi
 
         # Check the commit ID of the checked out code
