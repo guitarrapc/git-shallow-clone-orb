@@ -8,5 +8,5 @@ jobs:
     executor: cli/default
     working_directory: ~/test-shallow-clone-checkout
     steps:
-      - git-shallow-clone/checkout_shallow:
+      - git-shallow-clone/checkout
           keyscan_github: true

@@ -86,6 +86,10 @@ workflows:
           orb-name: git-shallow-clone
           test-steps:
             - test/local-test-build:
+                path: tests/alpine_test_noopenssh.yml
+            - test/local-test-build:
+                path: tests/alpine_test.yml
+            - test/local-test-build:
                 path: tests/basic_test.yml
             - test/local-test-build:
                 path: tests/change_depth.yml
@@ -93,10 +97,6 @@ workflows:
                 path: tests/change_fetchdepth.yml
             - test/local-test-build:
                 path: tests/change_path.yml
-            - test/local-test-build:
-                path: tests/alpine_test.yml
-            - test/local-test-build:
-                path: tests/alpine_test_noopenssh.yml
             - test/local-test-build:
                 path: tests/enable_github_keyscan.yml
             - test/local-test-build:
@@ -113,6 +113,10 @@ workflows:
           orb-name: git-shallow-clone
           test-steps:
             - test/local-test-build:
+                path: tests/alpine_test_noopenssh.yml
+            - test/local-test-build:
+                path: tests/alpine_test.yml
+            - test/local-test-build:
                 path: tests/basic_test.yml
             - test/local-test-build:
                 path: tests/change_depth.yml
@@ -120,10 +124,6 @@ workflows:
                 path: tests/change_fetchdepth.yml
             - test/local-test-build:
                 path: tests/change_path.yml
-            - test/local-test-build:
-                path: tests/alpine_test.yml
-            - test/local-test-build:
-                path: tests/alpine_test_noopenssh.yml
             - test/local-test-build:
                 path: tests/enable_github_keyscan.yml
             - test/local-test-build:

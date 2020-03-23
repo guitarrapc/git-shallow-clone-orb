@@ -34,14 +34,14 @@ validate before publish.
 
 ```
 $ cd ./src
-$ circleci orb validate orb.yml
+$ circleci orb validate @orb.yml
 ```
 
 publish orb to the alpha.
 
 ```
 $ cd ./src
-$ circleci orb publish orb.yml guitarrapc/git-shallow-clone@dev:alpha
+$ circleci orb publish @orb.yml guitarrapc/git-shallow-clone@dev:alpha
 ```
 
 
@@ -49,7 +49,7 @@ publish orb to the dev.
 
 ```
 $ cd ./src
-$ circleci orb publish orb.yml guitarrapc/git-shallow-clone@dev:0.x.0
+$ circleci orb publish @orb.yml guitarrapc/git-shallow-clone@dev:0.x.0
 ```
 
 publish orb to the production.
