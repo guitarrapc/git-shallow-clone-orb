@@ -10,4 +10,6 @@ jobs:
     working_directory: ~/test-shallow-clone-checkout
     steps:
       - run: apk update && apk add openssh git
-      - git-shallow-clone/checkout
+      - git-shallow-clone/checkout:
+            depth: 5
+            fetch_depth: 10
