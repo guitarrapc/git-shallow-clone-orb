@@ -92,7 +92,7 @@ steps:
         then
           clone_opts="<< parameters.clone_options >>"
         fi
-        git clone $clone_opts $CIRCLE_REPOSITORY_URL "<< parameters.path >>"
+        eval git clone $clone_opts $CIRCLE_REPOSITORY_URL "<< parameters.path >>"
         cd "<< parameters.path >>"
 
         fetch_opts="--depth << parameters.fetch_depth >>"
@@ -104,7 +104,7 @@ steps:
         if [ -n "$CIRCLE_TAG" ]
         then
           # tag
-          git fetch -t $fetch_opts --force origin "refs/tags/${CIRCLE_TAG}"
+          eval git fetch -t $fetch_opts --force origin "refs/tags/${CIRCLE_TAG}"
         elif [[ $(echo $CIRCLE_BRANCH | grep -e ^pull\/*) ]] # sh version of bash `elif [[ "$CIRCLE_BRANCH" =~ ^pull\/* ]]`
         then
           # pull request
