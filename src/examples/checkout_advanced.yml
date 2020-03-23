@@ -1,6 +1,5 @@
 description: |
-  git shallow clone instead of checkout.
-  you can specify clone_options.
+  advanced git shallow clone instead of checkout with clone_options.
   make sure checkout_advanced is using eval.
   # set --depth and other options
   - git/checkout_shallow:
