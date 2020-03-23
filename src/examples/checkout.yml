@@ -6,20 +6,20 @@ description: |
   Default github.com and bitbucket.org ssh key will not scan.
 
   # set fetch_depth: 1 to minimize fetch time
-  - git/checkout
+  - git/checkout:
       fetch_depth: 1
   # change depth:5 for some reason.
-  - git/checkout
+  - git/checkout:
       depth: 5
       fetch_depth: 5
   # enable github ssh key scan
-  - git/checkout
+  - git/checkout:
       keyscan_github: true
   # enable bitbucket ssh key scan
-  - git/checkout
+  - git/checkout:
       keyscan_bitbucket: true
   # clone the repository to src
-  - git/checkout
+  - git/checkout:
       path: src
 
 usage:

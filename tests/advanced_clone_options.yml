@@ -8,5 +8,5 @@ jobs:
     executor: cli/default
     working_directory: ~/test-shallow-clone-checkout
     steps:
-      - git-shallow-clone/checkout_advanced
+      - git-shallow-clone/checkout_advanced:
           clone_options: '--shallow-since "5 days ago"'

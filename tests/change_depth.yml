@@ -8,6 +8,6 @@ jobs:
     executor: cli/default
     working_directory: ~/test-shallow-clone-checkout
     steps:
-      - git-shallow-clone/checkout
+      - git-shallow-clone/checkout:
           depth: 5
           fetch_depth: 10
