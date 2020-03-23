@@ -1,6 +1,5 @@
 description: |
   advanced git shallow clone instead of checkout with clone_options.
-  make sure checkout_advanced is using eval.
   # set --depth and other options
   - git/checkout_shallow:
       clone_options: '--depth 1 --verbose'

@@ -1,6 +1,6 @@
 description: |
     checkout by git shallow clone with git options. Support Alpine, Ubuntu, Debian and others.
-    eval is used in step, make sure only trusted user could invoke CI.
+    eval is used in step, Fish shell is not supported.
 parameters:
   depth:
     description: >
