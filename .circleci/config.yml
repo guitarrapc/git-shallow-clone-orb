@@ -85,10 +85,10 @@ workflows:
           attach-workspace: true
           orb-name: git-shallow-clone
           test-steps:
-            # - test/local-test-build:
-            #     path: tests/alpine_test_noopenssh.yml
-            # - test/local-test-build:
-            #     path: tests/alpine_test.yml
+            - test/local-test-build:
+                path: tests/alpine_test_noopenssh.yml
+            - test/local-test-build:
+                path: tests/alpine_test.yml
             - test/local-test-build:
                 path: tests/basic_test.yml
             - test/local-test-build:

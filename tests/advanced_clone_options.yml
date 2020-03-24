@@ -9,4 +9,5 @@ jobs:
     working_directory: ~/test-shallow-clone-checkout
     steps:
       - git-shallow-clone/checkout_advanced:
-          clone_options: '--shallow-since "5 days ago"'
+          clone_options: '--depth 1 --shallow-since "5 days ago"'
+          fetch_options: '--depth 1 --shallow-since "5 days ago"'
