@@ -1,7 +1,7 @@
 description: |
   advanced git shallow clone instead of checkout with clone_options and fetch_options.
   make sure some options is exclusive each other.
-  e.g. `--depth N` cannot use with `--shallow-since`. 
+  e.g. `--depth N` cannot use with `--shallow-since`.
 
   # see verbose log on clone
   - git-shallow-clone/checkout_advanced
