@@ -16,4 +16,5 @@ display:
 ## - [x] Ubuntu
 
 ## Commands
-## - checkout_shallow
+## - checkout
+## - checkout_advanced

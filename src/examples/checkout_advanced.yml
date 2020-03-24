@@ -1,0 +1,17 @@
+description: |
+  advanced git shallow clone instead of checkout with clone_options.
+  # set --depth and other options
+  - git/checkout_advanced
+      clone_options: '--depth 1 --verbose'
+
+usage:
+  version: 2.1
+
+  orbs:
+    git-shallow-clone: guitarrapc/git-shallow-clone@x.y.z
+
+  workflows:
+    build:
+      jobs:
+        - git-shallow-clone/checkout_advanced:
+            clone_options: '--shallow-since "5 days ago"'

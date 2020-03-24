@@ -1,23 +1,19 @@
-description: checkout with git shallow clone. Support Alpine, Ubuntu, Debian and others.
+description: |
+    checkout by git shallow clone with git options. Support Alpine, Ubuntu, Debian and others.
+    eval is used in step, Fish shell is not supported.
 parameters:
-  depth:
-    description: >
-      Limit fetch depth to the specified number of commit from a remote branch history.
-      Refer git fetch documentation for more information.
-      If the parameter "clone_options" is set, this parameter is ignored.
-    type: integer
-    default: 1
-  fetch_depth:
-    description: >
-      Addtional fetch depth fetch depth to the specified number of commit from a remote branch history.
-      Pass more number then depth when you want to check futher commit history.
-    type: integer
-    default: 10
   clone_options:
     type: string
     default: ""
     description: >
-      git clone options you want to add such as '--depth 1 --verbose' and '--shallow-since "5 days ago"'
+      git clone options you want to add such as '--depth 1 --verbose' and '--depth 1 --shallow-since "5 days ago"'
+  fetch_options:
+    type: string
+    default: ""
+    description: >
+      git fetch options you want to add such as '--depth 1 --verbose' and '--depth 1 --shallow-since "5 days ago"'
+      you donot beed set '--force' option as it already set by default.
+      in case of tag, '-t' sat by default either.
   keyscan_github:
     description: >
       Pass `true` to dynamically get ssh-rsa from `github.com`.
@@ -78,27 +74,22 @@ steps:
         git config --global url."ssh://git@github.com".insteadOf "https://github.com" || true
         git config --global gc.auto 0 || true
 
-        clone_opts="--depth << parameters.depth >>"
         # checkout
-        if [ -n "<< parameters.clone_options >>" ]
-        then
-          clone_opts="<< parameters.clone_options >>"
-        fi
-        git clone $clone_opts $CIRCLE_REPOSITORY_URL "<< parameters.path >>"
+        git clone << parameters.clone_options >> $CIRCLE_REPOSITORY_URL "<< parameters.path >>"
         cd "<< parameters.path >>"
 
         # Fetch remote and check the commit ID of the checked out code
         if [ -n "$CIRCLE_TAG" ]
         then
           # tag
-          git fetch -t --depth << parameters.fetch_depth >> --force origin "refs/tags/${CIRCLE_TAG}"
+          git fetch -t << parameters.fetch_options >> --force origin "refs/tags/${CIRCLE_TAG}"
         elif [[ $(echo $CIRCLE_BRANCH | grep -e ^pull\/*) ]] # sh version of bash `elif [[ "$CIRCLE_BRANCH" =~ ^pull\/* ]]`
         then
           # pull request
-          git fetch --depth << parameters.fetch_depth >> --force origin "${CIRCLE_BRANCH}/head:remotes/origin/${CIRCLE_BRANCH}"
+          git fetch << parameters.fetch_options >> --force origin "${CIRCLE_BRANCH}/head:remotes/origin/${CIRCLE_BRANCH}"
         else
           # others
-          git fetch --depth=<< parameters.fetch_depth >> --force origin "$CIRCLE_BRANCH:remotes/origin/$CIRCLE_BRANCH"
+          git fetch << parameters.fetch_options >> --force origin "$CIRCLE_BRANCH:remotes/origin/$CIRCLE_BRANCH"
         fi
 
         # Check the commit ID of the checked out code
