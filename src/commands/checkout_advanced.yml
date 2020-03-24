@@ -4,12 +4,12 @@ description: |
 parameters:
   clone_options:
     type: string
-    default: ""
+    default: "--depth 1"
     description: >
       git clone options you want to add such as '--depth 1 --verbose' and '--depth 1 --shallow-since "5 days ago"'
   fetch_options:
     type: string
-    default: ""
+    default: "--depth 10"
     description: >
       git fetch options you want to add such as '--depth 1 --verbose' and '--depth 1 --shallow-since "5 days ago"'
       you donot beed set '--force' option as it already set by default.
