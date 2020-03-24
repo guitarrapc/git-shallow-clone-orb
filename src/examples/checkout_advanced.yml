@@ -1,8 +1,15 @@
 description: |
-  advanced git shallow clone instead of checkout with clone_options.
-  # set --depth and other options
-  - git/checkout_advanced
+  advanced git shallow clone instead of checkout with clone_options and fetch_options.
+
+  # see verbose log on clone
+  - git-shallow-clone/checkout_advanced
       clone_options: '--depth 1 --verbose'
+  # use --shallow-since for clone timing, but not for fetch timing.
+  - git-shallow-clone/checkout_advanced
+      clone_options: '--depth 1 --shallow-since "5 days ago"'
+  # use --shallow-since for fetch timing, but not for clone timing.
+  - git-shallow-clone/checkout_advanced
+      fetch_options: '--depth 1 --shallow-since "5 days ago"'
 
 usage:
   version: 2.1
@@ -14,4 +21,5 @@ usage:
     build:
       jobs:
         - git-shallow-clone/checkout_advanced:
-            clone_options: '--shallow-since "5 days ago"'
+            clone_options: '--depth 1 --shallow-since "5 days ago"'
+            fetch_options: '--depth 1 --shallow-since "5 days ago"'
