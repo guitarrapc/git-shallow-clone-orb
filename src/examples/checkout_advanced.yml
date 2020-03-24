@@ -1,15 +1,17 @@
 description: |
   advanced git shallow clone instead of checkout with clone_options and fetch_options.
+  make sure some options is exclusive each other.
+  e.g. `--depth N` cannot use with `--shallow-since`. 
 
   # see verbose log on clone
   - git-shallow-clone/checkout_advanced
       clone_options: '--depth 1 --verbose'
   # use --shallow-since for clone timing, but not for fetch timing.
   - git-shallow-clone/checkout_advanced
-      clone_options: '--depth 1 --shallow-since "5 days ago"'
+      clone_options: '--shallow-since "5 days ago"'
   # use --shallow-since for fetch timing, but not for clone timing.
   - git-shallow-clone/checkout_advanced
-      fetch_options: '--depth 1 --shallow-since "5 days ago"'
+      fetch_options: '--shallow-since "5 days ago"'
 
 usage:
   version: 2.1
@@ -21,5 +23,5 @@ usage:
     build:
       jobs:
         - git-shallow-clone/checkout_advanced:
-            clone_options: '--depth 1 --shallow-since "5 days ago"'
-            fetch_options: '--depth 1 --shallow-since "5 days ago"'
+            clone_options: '--shallow-since "5 days ago"'
+            fetch_options: '--shallow-since "5 days ago"'
