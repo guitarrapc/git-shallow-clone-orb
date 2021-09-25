@@ -81,7 +81,7 @@ steps:
         then
           # tag
           git fetch -t --depth << parameters.fetch_depth >> --force origin "refs/tags/${CIRCLE_TAG}"
-        elif [[ $(echo $CIRCLE_BRANCH | grep -e ^pull\/*) ]] # sh version of bash `elif [[ "$CIRCLE_BRANCH" =~ ^pull\/* ]]`
+        elif [[ $(echo $CIRCLE_BRANCH | grep -E ^pull\/[0-9]+$) ]] # sh version of bash `elif [[ "$CIRCLE_BRANCH" =~ ^pull\/[0-9]+$  ]]`
         then
           # pull request
           git fetch --depth << parameters.fetch_depth >> --force origin "${CIRCLE_BRANCH}/head:remotes/origin/${CIRCLE_BRANCH}"
