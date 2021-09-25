@@ -31,8 +31,8 @@ jobs:
       - image: cimg/base:stable
     steps:
       - git-shallow-clone/checkout_advanced:
-          clone_options: '--depth 10 --shallow-since "5 days ago"'
-          fetch_options: '--depth 10 --shallow-since "5 days ago"'
+          clone_options: '--shallow-since "5 days ago"'
+          fetch_options: '--shallow-since "5 days ago"'
   integration-test-checkout_alpine:
     docker:
       - image: circleci/redis:alpine3.13
