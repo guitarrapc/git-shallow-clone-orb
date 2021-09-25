@@ -21,6 +21,13 @@ parameters:
 
 jobs:
   # Define one or more jobs which will utilize your orb's commands and parameters to validate your changes.
+  integration-test-advanced_checkout:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - git-shallow-clone/checkout_advanced:
+          clone_options: '--depth 1 --shallow-since "5 days ago"'
+          fetch_options: '--depth 1 --shallow-since "5 days ago"'
   integration-test-basic_checkout:
     docker:
       - image: cimg/base:stable
@@ -30,13 +37,7 @@ jobs:
     docker:
       - image: circleci/redis:alpine3.13
     steps:
-      - run: apk update && apk add openssh git
-      - git-shallow-clone/checkout
-  integration-test-basic_alpine_noopenssl_checkout:
-    docker:
-      - image: circleci/redis:alpine3.13
-    steps:
-      - run: apk update && apk add git
+      - run: apk update && apk add openssh git # openssh is required
       - git-shallow-clone/checkout
   integration-test-depth_checkout:
     docker:
@@ -99,9 +100,9 @@ workflows:
       # jobs and commands to ensure they behave as expected. or, run other
       # integration tests of your choosing
       # Run any integration tests defined within the `jobs` key.
+      - integration-test-advanced_checkout
       - integration-test-basic_checkout
       - integration-test-basic_alpine_checkout
-      - integration-test-basic_alpine_noopenssl_checkout
       - integration-test-depth_checkout
       - integration-test-fetchdepth_checkout
       - integration-test-keyscan_bitbucket_checkout
@@ -120,9 +121,9 @@ workflows:
           fail-if-semver-not-indicated: true
           publish-version-tag: false
           requires:
+            - integration-test-advanced_checkout
             - integration-test-basic_checkout
             - integration-test-basic_alpine_checkout
-            - integration-test-basic_alpine_noopenssl_checkout
             - integration-test-depth_checkout
             - integration-test-fetchdepth_checkout
             - integration-test-keyscan_bitbucket_checkout
