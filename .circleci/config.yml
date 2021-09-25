@@ -26,6 +26,49 @@ jobs:
       - image: cimg/base:stable
     steps:
       - git-shallow-clone/checkout
+  integration-test-basic_alpine_checkout:
+    docker:
+      - image: circleci/redis:alpine3.13
+    steps:
+      - run: apk update && apk add openssh git
+      - git-shallow-clone/checkout
+  integration-test-basic_alpine_noopenssl_checkout:
+    docker:
+      - image: circleci/redis:alpine3.13
+    steps:
+      - run: apk update && apk add git
+      - git-shallow-clone/checkout
+  integration-test-depth_checkout:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - git-shallow-clone/checkout:
+          depth: 5
+          fetch_depth: 10
+  integration-test-fetchdepth_checkout:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - git-shallow-clone/checkout:
+          fetch_depth: 1
+  integration-test-keyscan_bitbucket_checkout:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - git-shallow-clone/checkout:
+          keyscan_bitbucket: true
+  integration-test-keyscan_github_checkout:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - git-shallow-clone/checkout:
+          keyscan_github: true
+  integration-test-path_checkout:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - git-shallow-clone/checkout:
+          path: src
 
 workflows:
   # Prior to producing a development orb (which requires credentials) basic validation, linting, and even unit testing can be performed.
@@ -57,6 +100,13 @@ workflows:
       # integration tests of your choosing
       # Run any integration tests defined within the `jobs` key.
       - integration-test-basic_checkout
+      - integration-test-basic_alpine_checkout
+      - integration-test-basic_alpine_noopenssl_checkout
+      - integration-test-depth_checkout
+      - integration-test-fetchdepth_checkout
+      - integration-test-keyscan_bitbucket_checkout
+      - integration-test-keyscan_github_checkout
+      - integration-test-path_checkout
 
       # Publish a semver version of the orb. relies on
       # the commit subject containing the text "[semver:patch|minor|major|skip]"
@@ -71,6 +121,13 @@ workflows:
           publish-version-tag: false
           requires:
             - integration-test-basic_checkout
+            - integration-test-basic_alpine_checkout
+            - integration-test-basic_alpine_noopenssl_checkout
+            - integration-test-depth_checkout
+            - integration-test-fetchdepth_checkout
+            - integration-test-keyscan_bitbucket_checkout
+            - integration-test-keyscan_github_checkout
+            - integration-test-path_checkout
           filters:
             branches:
               only:
