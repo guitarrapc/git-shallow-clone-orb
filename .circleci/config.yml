@@ -40,8 +40,7 @@ integration-master_filters: &integration-master_filters
   tags:
     only: /master-.*/
 
-prod-deploy_requires: &prod-deploy_requires
-  [test-commands-master]
+prod-deploy_requires: &prod-deploy_requires [test-commands-master]
 
 workflows:
   lint_pack-validate_publish-dev:
@@ -85,10 +84,10 @@ workflows:
           attach-workspace: true
           orb-name: git-shallow-clone
           test-steps:
-            - test/local-test-build:
-                path: tests/alpine_test_noopenssh.yml
-            - test/local-test-build:
-                path: tests/alpine_test.yml
+            # - test/local-test-build:
+            #     path: tests/alpine_test_noopenssh.yml
+            # - test/local-test-build:
+            #     path: tests/alpine_test.yml
             - test/local-test-build:
                 path: tests/basic_test.yml
             - test/local-test-build:
