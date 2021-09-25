@@ -6,7 +6,7 @@ orbs:
 jobs:
   build:
     docker:
-      - image: circleci/circleci-cli:alpine
+      - image: circleci/circleci-cli:0.1.6949-alpine
     working_directory: ~/test-shallow-clone-checkout
     steps:
       - run: apk update && apk add git
