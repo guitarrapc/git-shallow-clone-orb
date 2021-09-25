@@ -119,7 +119,7 @@ workflows:
           orb-name: guitarrapc/git-shallow-clone
           add-pr-comment: false
           fail-if-semver-not-indicated: true
-          publish-version-tag: false
+          publish-version-tag: true
           requires:
             - integration-test-checkout
             - integration-test-checkout_advanced
