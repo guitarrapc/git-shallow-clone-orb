@@ -124,7 +124,7 @@ workflows:
       - orb-tools/dev-promote-prod-from-commit-subject:
           orb-name: guitarrapc/git-shallow-clone
           add-pr-comment: false
-          fail-if-semver-not-indicated: true
+          fail-if-semver-not-indicated: false
           publish-version-tag: true
           requires:
             - integration-test-checkout
