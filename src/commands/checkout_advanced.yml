@@ -68,7 +68,7 @@ steps:
 
         (umask 077; touch ~/.ssh/id_rsa)
         chmod 0600 ~/.ssh/id_rsa
-        (cat $CHECKOUT_KEY > ~/.ssh/id_rsa)
+        (echo $CHECKOUT_KEY > ~/.ssh/id_rsa)
 
         # use git+ssh instead of https
         git config --global url."ssh://git@github.com".insteadOf "https://github.com" || true

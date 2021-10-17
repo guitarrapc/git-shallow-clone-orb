@@ -39,6 +39,11 @@ jobs:
     steps:
       - run: apk update && apk add openssh git # openssh is required
       - git-shallow-clone/checkout
+  integration-test-checkout_macos:
+    macos:
+      xcode: 13.0.0
+    steps:
+      - git-shallow-clone/checkout
   integration-test-checkout_depth:
     docker:
       - image: cimg/base:stable
@@ -103,6 +108,7 @@ workflows:
       - integration-test-checkout
       - integration-test-checkout_advanced
       - integration-test-checkout_alpine
+      - integration-test-checkout_macos
       - integration-test-checkout_depth
       - integration-test-checkout_fetchdepth
       - integration-test-checkout_keyscan_bitbucket
@@ -124,6 +130,7 @@ workflows:
             - integration-test-checkout
             - integration-test-checkout_advanced
             - integration-test-checkout_alpine
+            - integration-test-checkout_macos
             - integration-test-checkout_depth
             - integration-test-checkout_fetchdepth
             - integration-test-checkout_keyscan_bitbucket
