@@ -108,7 +108,7 @@ workflows:
       - integration-test-checkout
       - integration-test-checkout_advanced
       - integration-test-checkout_alpine
-      - integration-test-checkout_macos
+      # - integration-test-checkout_macos # stop until macOS is avaiable on this account.
       - integration-test-checkout_depth
       - integration-test-checkout_fetchdepth
       - integration-test-checkout_keyscan_bitbucket
@@ -130,7 +130,7 @@ workflows:
             - integration-test-checkout
             - integration-test-checkout_advanced
             - integration-test-checkout_alpine
-            - integration-test-checkout_macos
+            # - integration-test-checkout_macos # stop until macOS is avaiable on this account.
             - integration-test-checkout_depth
             - integration-test-checkout_fetchdepth
             - integration-test-checkout_keyscan_bitbucket
