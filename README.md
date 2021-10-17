@@ -38,7 +38,7 @@ Call it from integration-test_deploy job, and add as orb-tools/dev-promote-prod-
   integration-test_deploy:
     when: << pipeline.parameters.run-integration-tests >>
     jobs:
-      - integration-test-checkout
+      - integration-test-checkout # <-- this line!
 
       - orb-tools/dev-promote-prod-from-commit-subject:
           orb-name: guitarrapc/git-shallow-clone
@@ -46,7 +46,7 @@ Call it from integration-test_deploy job, and add as orb-tools/dev-promote-prod-
           fail-if-semver-not-indicated: true
           publish-version-tag: false
           requires:
-            - integration-test-checkout
+            - integration-test-checkout # <-- this line!
           filters:
             branches:
               only:
