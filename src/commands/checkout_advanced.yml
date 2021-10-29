@@ -13,6 +13,7 @@ parameters:
     description: >
       git fetch options you want to add such as '--depth 1 --verbose' and '--depth 1 --shallow-since "5 days ago"'
       you donot beed set '--force' option as it already set by default.
+      in case of tag, '-t' sat by default in tag_fetch_options
   tag_fetch_options:
     type: string
     default: "--tags"
