@@ -19,7 +19,7 @@ parameters:
     default: "--tags"
     description: >
       Additional git fetch options you want to add specifically for tags such as '--tags' or '--no-tags'.
-      Default value is -t
+      Default value is --tags
   keyscan_github:
     description: >
       Pass `true` to dynamically get ssh-rsa from `github.com`.
