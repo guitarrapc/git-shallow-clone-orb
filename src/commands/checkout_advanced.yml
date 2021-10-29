@@ -15,9 +15,9 @@ parameters:
       you donot beed set '--force' option as it already set by default.
   tag_fetch_options:
     type: string
-    default: "-t"
+    default: "--tags"
     description: >
-      Additional git fetch options you want to add specifically for tags such as '-t' or '--no-tags'.
+      Additional git fetch options you want to add specifically for tags such as '--tags' or '--no-tags'.
       Default value is -t
   keyscan_github:
     description: >
