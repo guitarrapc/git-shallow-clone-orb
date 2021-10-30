@@ -26,23 +26,32 @@ jobs:
       - image: cimg/base:stable
     steps:
       - git-shallow-clone/checkout
+      - run: git tag
   integration-test-checkout_advanced:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - git-shallow-clone/checkout_advanced
+      - run: git tag
+  integration-test-checkout_advanced_fetchoptions:
     docker:
       - image: cimg/base:stable
     steps:
       - git-shallow-clone/checkout_advanced:
           clone_options: '--shallow-since "5 days ago"'
           fetch_options: '--shallow-since "5 days ago"'
+  integration-test-checkout_advanced_notags:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - git-shallow-clone/checkout_advanced:
+          tag_fetch_options: --no-tags
+      - run: git tag
   integration-test-checkout_alpine:
     docker:
       - image: circleci/redis:alpine3.13
     steps:
       - run: apk update && apk add openssh git # openssh is required
-      - git-shallow-clone/checkout
-  integration-test-checkout_macos:
-    macos:
-      xcode: 13.0.0
-    steps:
       - git-shallow-clone/checkout
   integration-test-checkout_depth:
     docker:
@@ -69,6 +78,11 @@ jobs:
     steps:
       - git-shallow-clone/checkout:
           keyscan_github: true
+  integration-test-checkout_macos:
+    macos:
+      xcode: 13.0.0
+    steps:
+      - git-shallow-clone/checkout
   integration-test-checkout_path:
     docker:
       - image: cimg/base:stable
@@ -107,12 +121,14 @@ workflows:
       # Run any integration tests defined within the `jobs` key.
       - integration-test-checkout
       - integration-test-checkout_advanced
+      - integration-test-checkout_advanced_fetchoptions
+      - integration-test-checkout_advanced_notags
       - integration-test-checkout_alpine
-      - integration-test-checkout_macos
       - integration-test-checkout_depth
       - integration-test-checkout_fetchdepth
       - integration-test-checkout_keyscan_bitbucket
       - integration-test-checkout_keyscan_github
+      - integration-test-checkout_macos
       - integration-test-checkout_path
 
       # Publish a semver version of the orb. relies on
@@ -129,12 +145,14 @@ workflows:
           requires:
             - integration-test-checkout
             - integration-test-checkout_advanced
+            - integration-test-checkout_advanced_fetchoptions
+            - integration-test-checkout_advanced_notags
             - integration-test-checkout_alpine
-            - integration-test-checkout_macos
             - integration-test-checkout_depth
             - integration-test-checkout_fetchdepth
             - integration-test-checkout_keyscan_bitbucket
             - integration-test-checkout_keyscan_github
+            - integration-test-checkout_macos
             - integration-test-checkout_path
           filters:
             branches:
