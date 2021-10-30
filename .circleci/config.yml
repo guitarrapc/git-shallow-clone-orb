@@ -97,7 +97,7 @@ jobs:
     steps:
       - git-shallow-clone/checkout:
           fetch_depth: 1000
-          #no_tags: true
+          no_tags: true
       - run: git tag --list # should be no tags
   integration-test-checkout_path:
     docker:
