@@ -99,7 +99,7 @@ steps:
         if [ -n "$CIRCLE_TAG" ]
         then
           # tag
-          git fetch ${tag_args} --depth << parameters.fetch_depth >> --force origin "refs/tags/${CIRCLE_TAG}"
+          git fetch ${tag_args} --depth << parameters.fetch_depth >> --force origin "+refs/tags/${CIRCLE_TAG}:refs/tags/${CIRCLE_TAG}"
         elif [[ $(echo $CIRCLE_BRANCH | grep -E ^pull\/[0-9]+$) ]] # sh version of bash `elif [[ "$CIRCLE_BRANCH" =~ ^pull\/[0-9]+$  ]]`
         then
           # pull request
