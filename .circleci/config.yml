@@ -44,7 +44,7 @@ jobs:
     steps:
       - git-shallow-clone/checkout_advanced:
           clone_options: "--depth 1"
-          fetch_options: "--depth 1000"
+          fetch_options: "--depth 1000 --no-tags"
           tag_fetch_options: "--no-tags"
       - run: git tag --list
   integration-test-checkout_advanced_tags:
