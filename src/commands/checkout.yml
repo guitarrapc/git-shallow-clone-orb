@@ -8,10 +8,18 @@ parameters:
     default: 1
   fetch_depth:
     description: >
-      Addtional fetch depth fetch depth to the specified number of commit from a remote branch history.
+      Addtional fetch depth to the specified number of commit from a remote branch history.
       Pass more number then depth when you want to check futher commit history.
     type: integer
     default: 10
+  without_tags:
+    description: >
+      true to add '--no-tags' when fetching.
+      As git not offer tag depth, we only able to control fetch all tags or not.
+      This enable you to stop fetch tags when you have vast numbers of tags during specified fetch depth.
+      In other word, if you need tag then fetch specified tags manually when use 'without_tag: true'.
+    type: boolean
+    default: false
   keyscan_github:
     description: >
       Pass `true` to dynamically get ssh-rsa from `github.com`.
@@ -76,18 +84,29 @@ steps:
         git clone --depth << parameters.depth >> $CIRCLE_REPOSITORY_URL "<< parameters.path >>"
         cd "<< parameters.path >>"
 
+        # Define Tag Fetch args
+        if [ -n "$CIRCLE_TAG" ]
+        then
+          # only tags operation have default --tags. others will no tag options
+          tag_args="--tags"
+        fi
+        if [ << parameters.without_tags >> == 'true']
+        then
+          tag_args="--no-tags"
+        fi
+
         # Fetch remote and check the commit ID of the checked out code
         if [ -n "$CIRCLE_TAG" ]
         then
           # tag
-          git fetch --tags --depth << parameters.fetch_depth >> --force origin "refs/tags/${CIRCLE_TAG}"
+          git fetch ${tag_args} --depth << parameters.fetch_depth >> --force origin "refs/tags/${CIRCLE_TAG}"
         elif [[ $(echo $CIRCLE_BRANCH | grep -E ^pull\/[0-9]+$) ]] # sh version of bash `elif [[ "$CIRCLE_BRANCH" =~ ^pull\/[0-9]+$  ]]`
         then
           # pull request
-          git fetch --depth << parameters.fetch_depth >> --force origin "${CIRCLE_BRANCH}/head:remotes/origin/${CIRCLE_BRANCH}"
+          git fetch ${tag_args} --depth << parameters.fetch_depth >> --force origin "${CIRCLE_BRANCH}/head:remotes/origin/${CIRCLE_BRANCH}"
         else
           # others
-          git fetch --depth=<< parameters.fetch_depth >> --force origin "$CIRCLE_BRANCH:remotes/origin/$CIRCLE_BRANCH"
+          git fetch ${tag_args} --depth=<< parameters.fetch_depth >> --force origin "$CIRCLE_BRANCH:remotes/origin/$CIRCLE_BRANCH"
         fi
 
         # Check the commit ID of the checked out code
