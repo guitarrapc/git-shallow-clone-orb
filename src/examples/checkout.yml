@@ -21,6 +21,9 @@ description: |
   # clone the repository to src
   - git-shallow-clone/checkout:
       path: src
+  # skip tag fetch on `PR`, `PUSH` and fetch only single tag on `TAG`
+  - git-shallow-clone/checkout:
+      no_tags: true
 
 usage:
   version: 2.1

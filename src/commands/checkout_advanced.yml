@@ -1,6 +1,6 @@
 description: |
-    checkout by git shallow clone with git options. Support Alpine, Ubuntu, Debian and others.
-    eval is used in step, Fish shell is not supported.
+  checkout by git shallow clone with git options. Support Alpine, Ubuntu, Debian and others.
+  eval is used in step, Fish shell is not supported.
 parameters:
   clone_options:
     type: string
@@ -12,14 +12,15 @@ parameters:
     default: "--depth 10"
     description: >
       git fetch options you want to add such as '--depth 1 --verbose' and '--depth 1 --shallow-since "5 days ago"'
-      you donot beed set '--force' option as it already set by default.
-      in case of tag, '-t' sat by default in tag_fetch_options
+      you don't need set '--force' option as it already set by default.
+      in case of tag, add '--no-tags' on this option and tag_fetch_options.
   tag_fetch_options:
     type: string
     default: "--tags"
     description: >
+      This option apply when git operation is tag. Use 'fetch_options' instead if pr and other git operation.
       Additional git fetch options you want to add specifically for tags such as '--tags' or '--no-tags'.
-      Default value is --tags
+      Default value is '--tags'
   keyscan_github:
     description: >
       Pass `true` to dynamically get ssh-rsa from `github.com`.

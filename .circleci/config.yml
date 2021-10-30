@@ -30,19 +30,46 @@ jobs:
     docker:
       - image: cimg/base:stable
     steps:
+      - git-shallow-clone/checkout_advanced
+  integration-test-checkout_advanced_fetchoptions:
+    docker:
+      - image: cimg/base:stable
+    steps:
       - git-shallow-clone/checkout_advanced:
           clone_options: '--shallow-since "5 days ago"'
           fetch_options: '--shallow-since "5 days ago"'
+  integration-test-checkout_advanced_notags:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - git-shallow-clone/checkout_advanced:
+          clone_options: "--depth 1"
+          fetch_options: "--depth 1000 --no-tags"
+          tag_fetch_options: "--no-tags"
+      # should be no tags
+      - run: |
+          set -e
+          git tag --list
+          count=$(git tag --list | wc -l)
+          if [ $count -ne 0 ]; then exit 1; fi
+  integration-test-checkout_advanced_tags:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - git-shallow-clone/checkout_advanced:
+          clone_options: "--depth 1"
+          fetch_options: "--depth 1000"
+      # should be all tags in fetch depth
+      - run: |
+          set -e
+          git tag --list
+          count=$(git tag --list | wc -l)
+          if [ $count -eq 0 ]; then exit 1; fi
   integration-test-checkout_alpine:
     docker:
       - image: circleci/redis:alpine3.13
     steps:
       - run: apk update && apk add openssh git # openssh is required
-      - git-shallow-clone/checkout
-  integration-test-checkout_macos:
-    macos:
-      xcode: 13.0.0
-    steps:
       - git-shallow-clone/checkout
   integration-test-checkout_depth:
     docker:
@@ -69,12 +96,42 @@ jobs:
     steps:
       - git-shallow-clone/checkout:
           keyscan_github: true
+  integration-test-checkout_macos:
+    macos:
+      xcode: 13.0.0
+    steps:
+      - git-shallow-clone/checkout
+  integration-test-checkout_notags:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - git-shallow-clone/checkout:
+          fetch_depth: 1000
+          no_tags: true
+      # should be no tags
+      - run: |
+          set -e
+          git tag --list
+          count=$(git tag --list | wc -l)
+          if [ $count -ne 0 ]; then exit 1; fi
   integration-test-checkout_path:
     docker:
       - image: cimg/base:stable
     steps:
       - git-shallow-clone/checkout:
           path: src
+  integration-test-checkout_tags:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - git-shallow-clone/checkout:
+          fetch_depth: 1000
+      # should be all tags in fetch depth
+      - run: |
+          set -e
+          git tag --list
+          count=$(git tag --list | wc -l)
+          if [ $count -eq 0 ]; then exit 1; fi
 
 workflows:
   # Prior to producing a development orb (which requires credentials) basic validation, linting, and even unit testing can be performed.
@@ -107,13 +164,18 @@ workflows:
       # Run any integration tests defined within the `jobs` key.
       - integration-test-checkout
       - integration-test-checkout_advanced
+      - integration-test-checkout_advanced_fetchoptions
+      - integration-test-checkout_advanced_notags
+      - integration-test-checkout_advanced_tags
       - integration-test-checkout_alpine
-      - integration-test-checkout_macos
       - integration-test-checkout_depth
       - integration-test-checkout_fetchdepth
       - integration-test-checkout_keyscan_bitbucket
       - integration-test-checkout_keyscan_github
+      - integration-test-checkout_macos
+      - integration-test-checkout_notags
       - integration-test-checkout_path
+      - integration-test-checkout_tags
 
       # Publish a semver version of the orb. relies on
       # the commit subject containing the text "[semver:patch|minor|major|skip]"
@@ -129,13 +191,18 @@ workflows:
           requires:
             - integration-test-checkout
             - integration-test-checkout_advanced
+            - integration-test-checkout_advanced_fetchoptions
+            - integration-test-checkout_advanced_notags
+            - integration-test-checkout_advanced_tags
             - integration-test-checkout_alpine
-            - integration-test-checkout_macos
             - integration-test-checkout_depth
             - integration-test-checkout_fetchdepth
             - integration-test-checkout_keyscan_bitbucket
             - integration-test-checkout_keyscan_github
+            - integration-test-checkout_macos
+            - integration-test-checkout_notags
             - integration-test-checkout_path
+            - integration-test-checkout_tags
           filters:
             branches:
               only:
