@@ -13,7 +13,13 @@ parameters:
     description: >
       git fetch options you want to add such as '--depth 1 --verbose' and '--depth 1 --shallow-since "5 days ago"'
       you donot beed set '--force' option as it already set by default.
-      in case of tag, '-t' sat by default either.
+      in case of tag, '-t' sat by default in tag_fetch_options
+  tag_fetch_options:
+    type: string
+    default: "--tags"
+    description: >
+      Additional git fetch options you want to add specifically for tags such as '--tags' or '--no-tags'.
+      Default value is --tags
   keyscan_github:
     description: >
       Pass `true` to dynamically get ssh-rsa from `github.com`.
@@ -82,7 +88,7 @@ steps:
         if [ -n "$CIRCLE_TAG" ]
         then
           # tag
-          git fetch -t << parameters.fetch_options >> --force origin "refs/tags/${CIRCLE_TAG}"
+          git fetch << parameters.tag_fetch_options >> << parameters.fetch_options >> --force origin "+refs/tags/${CIRCLE_TAG}:refs/tags/${CIRCLE_TAG}"
         elif [[ $(echo $CIRCLE_BRANCH | grep -e ^pull\/*) ]] # sh version of bash `elif [[ "$CIRCLE_BRANCH" =~ ^pull\/* ]]`
         then
           # pull request
