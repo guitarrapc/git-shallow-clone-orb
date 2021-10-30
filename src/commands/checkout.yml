@@ -90,7 +90,7 @@ steps:
           # only tags operation have default --tags. others will no tag options
           tag_args="--tags"
         fi
-        if [ << parameters.no_tags >> == 'true']
+        if [ '<< parameters.no_tags >>' == 'true' ]
         then
           tag_args="--no-tags"
         fi
