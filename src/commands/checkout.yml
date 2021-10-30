@@ -12,14 +12,6 @@ parameters:
       Pass more number then depth when you want to check futher commit history.
     type: integer
     default: 10
-  without_tags:
-    description: >
-      true to add '--no-tags' when fetching.
-      As git not offer tag depth, we only able to control fetch all tags or not.
-      This enable you to stop fetch tags when you have vast numbers of tags during specified fetch depth.
-      In other word, if you need tag then fetch specified tags manually when use 'without_tag: true'.
-    type: boolean
-    default: false
   keyscan_github:
     description: >
       Pass `true` to dynamically get ssh-rsa from `github.com`.
@@ -35,6 +27,14 @@ parameters:
       Checkout directory (default: job’s working_directory)
     type: string
     default: .
+  no_tags:
+    description: >
+      true to add '--no-tags' when fetching.
+      As git not offer tag depth, we only able to control fetch all tags or not.
+      This enable you to stop fetch tags when you have vast numbers of tags during specified fetch depth.
+      In other word, if you need tag then fetch specified tags manually when use 'without_tag: true'.
+    type: boolean
+    default: false
 steps:
   - run:
       name: Checkout code shallow
@@ -90,7 +90,7 @@ steps:
           # only tags operation have default --tags. others will no tag options
           tag_args="--tags"
         fi
-        if [ << parameters.without_tags >> == 'true']
+        if [ << parameters.no_tags >> == 'true']
         then
           tag_args="--no-tags"
         fi
