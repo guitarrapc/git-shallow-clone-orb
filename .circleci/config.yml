@@ -46,7 +46,7 @@ jobs:
           clone_options: "--depth 1"
           fetch_options: "--depth 1000 --no-tags"
           tag_fetch_options: "--no-tags"
-      - run: git tag --list
+      - run: git tag --list # should be no tags
   integration-test-checkout_advanced_tags:
     docker:
       - image: cimg/base:stable
@@ -54,7 +54,7 @@ jobs:
       - git-shallow-clone/checkout_advanced:
           clone_options: "--depth 1"
           fetch_options: "--depth 1000"
-      - run: git tag --list
+      - run: git tag --list # should be all tags in fetch depth
   integration-test-checkout_alpine:
     docker:
       - image: circleci/redis:alpine3.13
@@ -91,6 +91,14 @@ jobs:
       xcode: 13.0.0
     steps:
       - git-shallow-clone/checkout
+  integration-test-checkout_notags:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - git-shallow-clone/checkout:
+          fetch_depth: 1000
+          without_tags: true
+      - run: git tag --list # should be not tags
   integration-test-checkout_path:
     docker:
       - image: cimg/base:stable
@@ -103,7 +111,7 @@ jobs:
     steps:
       - git-shallow-clone/checkout:
           fetch_depth: 1000
-      - run: git tag --list
+      - run: git tag --list # should be all tags in fetch depth
 
 workflows:
   # Prior to producing a development orb (which requires credentials) basic validation, linting, and even unit testing can be performed.
@@ -145,6 +153,7 @@ workflows:
       - integration-test-checkout_keyscan_bitbucket
       - integration-test-checkout_keyscan_github
       - integration-test-checkout_macos
+      - integration-test-checkout_notags
       - integration-test-checkout_path
       - integration-test-checkout_tags
 
@@ -171,6 +180,7 @@ workflows:
             - integration-test-checkout_keyscan_bitbucket
             - integration-test-checkout_keyscan_github
             - integration-test-checkout_macos
+            - integration-test-checkout_notags
             - integration-test-checkout_path
             - integration-test-checkout_tags
           filters:
