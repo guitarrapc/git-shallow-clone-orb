@@ -12,6 +12,13 @@ description: |
   # use --shallow-since for fetch timing, but not for clone timing.
   - git-shallow-clone/checkout_advanced
       fetch_options: '--shallow-since "5 days ago"'
+  # use --no-tags to skip tag fetch on `PR` and `PUSH`.
+  - git-shallow-clone/checkout_advanced
+      fetch_options: '--depth 10 --no-tags'
+  # use --no-tags to fetch single tag on git `TAG`.
+  - git-shallow-clone/checkout_advanced
+      fetch_options: '--depth 10 --no-tags' # you can omit this.
+      tag_fetch_options: '--no-tags'
 
 usage:
   version: 2.1
