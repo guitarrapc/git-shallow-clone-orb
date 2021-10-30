@@ -146,6 +146,11 @@ workflows:
           requires:
             - orb-tools/lint
             - orb-tools/pack
+          filters:
+            branches:
+              # Forked pull requests have CIRCLE_BRANCH set to pull/XXX
+              # Forked pull requests not allowed to publish alpha release, so just skip it.
+              ignore: /pull\/[0-9]+/
       - orb-tools/trigger-integration-tests-workflow:
           name: trigger-integration-dev
           requires:
