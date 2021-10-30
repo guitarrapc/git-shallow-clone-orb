@@ -46,7 +46,11 @@ jobs:
           clone_options: "--depth 1"
           fetch_options: "--depth 1000 --no-tags"
           tag_fetch_options: "--no-tags"
-      - run: git tag --list # should be no tags
+      # should be no tags
+      - run: |
+          git tag --list
+          count=$(git tag --list | wc -l)
+          if [ count -ne 0 ]; then exit 1; fi
   integration-test-checkout_advanced_tags:
     docker:
       - image: cimg/base:stable
@@ -54,7 +58,11 @@ jobs:
       - git-shallow-clone/checkout_advanced:
           clone_options: "--depth 1"
           fetch_options: "--depth 1000"
-      - run: git tag --list # should be all tags in fetch depth
+      # should be all tags in fetch depth
+      - run: |
+          git tag --list
+          count=$(git tag --list | wc -l)
+          if [ count -eq 0 ]; then exit 1; fi
   integration-test-checkout_alpine:
     docker:
       - image: circleci/redis:alpine3.13
@@ -98,7 +106,11 @@ jobs:
       - git-shallow-clone/checkout:
           fetch_depth: 1000
           no_tags: true
-      - run: git tag --list # should be no tags
+      # should be no tags
+      - run: |
+          git tag --list
+          count=$(git tag --list | wc -l)
+          if [ count -ne 0 ]; then exit 1; fi
   integration-test-checkout_path:
     docker:
       - image: cimg/base:stable
@@ -111,7 +123,11 @@ jobs:
     steps:
       - git-shallow-clone/checkout:
           fetch_depth: 1000
-      - run: git tag --list # should be all tags in fetch depth
+      # should be all tags in fetch depth
+      - run: |
+          git tag --list
+          count=$(git tag --list | wc -l)
+          if [ count -eq 0 ]; then exit 1; fi
 
 workflows:
   # Prior to producing a development orb (which requires credentials) basic validation, linting, and even unit testing can be performed.
