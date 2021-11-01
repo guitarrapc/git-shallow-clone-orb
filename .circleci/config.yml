@@ -47,11 +47,13 @@ jobs:
           fetch_options: "--depth 1000 --no-tags"
           tag_fetch_options: "--no-tags"
       # should be no tags
-      - run: |
-          set -e
-          git tag --list
-          count=$(git tag --list | wc -l)
-          if [ $count -ne 0 ]; then exit 1; fi
+      - run:
+          name: "test single tag is fetched"
+          command: |
+            set -e
+            git tag --list
+            count=$(git tag --list | wc -l)
+            if [ $count -ne 0 ]; then exit 1; fi
   integration-test-checkout_advanced_submodule:
     docker:
       - image: cimg/base:stable
@@ -74,11 +76,13 @@ jobs:
           clone_options: "--depth 1"
           fetch_options: "--depth 1000"
       # should be all tags in fetch depth
-      - run: |
-          set -e
-          git tag --list
-          count=$(git tag --list | wc -l)
-          if [ $count -eq 0 ]; then exit 1; fi
+      - run:
+          name: "test many tags is fetched"
+          command: |
+            set -e
+            git tag --list
+            count=$(git tag --list | wc -l)
+            if [ $count -eq 0 ]; then exit 1; fi
   integration-test-checkout_alpine:
     docker:
       - image: circleci/redis:alpine3.13
@@ -123,11 +127,13 @@ jobs:
           fetch_depth: 1000
           no_tags: true
       # should be no tags
-      - run: |
-          set -e
-          git tag --list
-          count=$(git tag --list | wc -l)
-          if [ $count -ne 0 ]; then exit 1; fi
+      - run:
+          name: "test single tag is fetched"
+          command: |
+            set -e
+            git tag --list
+            count=$(git tag --list | wc -l)
+            if [ $count -ne 0 ]; then exit 1; fi
   integration-test-checkout_path:
     docker:
       - image: cimg/base:stable
@@ -141,11 +147,13 @@ jobs:
       - git-shallow-clone/checkout
       - run: git submodule sync
       - run: git submodule update --init
-      - run: |
-          set -e
-          ls -l | wc -l
-          count=$(ls -l | wc -l)
-          if [ $count -eq 0 ]; then exit 1; fi
+      - run:
+          name: "test submodule is successfully init"
+          command: |
+            set -e
+            ls -l | wc -l
+            count=$(ls -l | wc -l)
+            if [ $count -eq 0 ]; then exit 1; fi
   integration-test-checkout_tags:
     docker:
       - image: cimg/base:stable
