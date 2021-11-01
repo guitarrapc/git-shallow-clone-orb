@@ -12,6 +12,14 @@ parameters:
       Pass more number then depth when you want to check futher commit history.
     type: integer
     default: 10
+  no_tags:
+    description: >
+      true to add '--no-tags' when fetching.
+      As git not offer tag depth, we only able to control fetch all tags or not.
+      This enable you to stop fetch tags when you have vast numbers of tags during specified fetch depth.
+      In other word, if you need tag then fetch specified tags manually when use 'without_tag: true'.
+    type: boolean
+    default: false
   keyscan_github:
     description: >
       Pass `true` to dynamically get ssh-rsa from `github.com`.
@@ -27,14 +35,6 @@ parameters:
       Checkout directory (default: job’s working_directory)
     type: string
     default: .
-  no_tags:
-    description: >
-      true to add '--no-tags' when fetching.
-      As git not offer tag depth, we only able to control fetch all tags or not.
-      This enable you to stop fetch tags when you have vast numbers of tags during specified fetch depth.
-      In other word, if you need tag then fetch specified tags manually when use 'without_tag: true'.
-    type: boolean
-    default: false
 steps:
   - run:
       name: Checkout code shallow
@@ -44,8 +44,7 @@ steps:
 
         # Workaround old docker images with incorrect $HOME
         # check https://github.com/docker/docker/issues/2968 for details
-        if [ "${HOME}" = "/" ]
-        then
+        if [ "${HOME}" = "/" ]; then
           export HOME=$(getent passwd $(id -un) | cut -d: -f6)
         fi
 
@@ -57,26 +56,21 @@ steps:
         mkdir -p "$SSH_CONFIG_DIR"
         chmod 0700 "$SSH_CONFIG_DIR"
 
-        if [ -x "$(command -v ssh-keyscan)" ] && ([ "<< parameters.keyscan_github >>" == "true" ] || [ "<< parameters.keyscan_bitbucket >>" == "true" ])
-        then
-          if [ "<< parameters.keyscan_github >>" == "true" ]
-          then
+        if [ -x "$(command -v ssh-keyscan)" ] && ([ "<< parameters.keyscan_github >>" == "true" ] || [ "<< parameters.keyscan_bitbucket >>" == "true" ]); then
+          if [ "<< parameters.keyscan_github >>" == "true" ]; then
             ssh-keyscan -H github.com >> "$SSH_CONFIG_DIR/known_hosts"
           fi
-          if [ "<< parameters.keyscan_bitbucket >>" == "true" ]
-          then
+          if [ "<< parameters.keyscan_bitbucket >>" == "true" ]; then
             ssh-keyscan -H bitbucket.org >> "$SSH_CONFIG_DIR/known_hosts"
           fi
         fi
 
-        if [ "<< parameters.keyscan_github >>" != "true" ]
-        then
+        if [ "<< parameters.keyscan_github >>" != "true" ]; then
           echo 'github.com ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAq2A7hRGmdnm9tUDbO9IDSwBK6TbQa+PXYPCPy6rbTrTtw7PHkccKrpp0yVhp5HdEIcKr6pLlVDBfOLX9QUsyCOV0wzfjIJNlGEYsdlLJizHhbn2mUjvSAHQqZETYP81eFzLQNnPHt4EVVUh7VfDESU84KezmD5QlWpXLmvU31/yMf+Se8xhHTvKSCZIFImWwoG6mbUoWf9nzpIoaSjB+weqqUUmpaaasXVal72J+UX2B+2RPW3RcT0eOzQgqlJL3RKrTJvdsjE3JEAvGq3lGHSZXy28G3skua2SmVi/w4yCE6gbODqnTWlg7+wC604ydGXA8VJiS5ap43JXiUFFAaQ==
         ' >> "$SSH_CONFIG_DIR/known_hosts"
         fi
 
-        if [ "<< parameters.keyscan_bitbucket >>" != "true" ]
-        then
+        if [ "<< parameters.keyscan_bitbucket >>" != "true" ]; then
           echo 'bitbucket.org ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAubiN81eDcafrgMeLzaFPsw2kNvEcqTKl/VqLat/MaB33pZy0y3rJZtnqwR2qOOvbwKZYKiEO1O6VqNEBxKvJJelCq0dTXWT5pbO2gDXC6h6QDXCaHo6pOHGPUy+YBaGQRGuSusMEASYiWunYN0vCAI8QaXnWMXNMdFP3jHAJH0eDsoiGnLPBlBp4TNm6rYI74nMzgz3B9IikW4WVK+dc8KZJZWYjAuORU3jc1c/NPskD2ASinf8v3xnfXeukU0sJ5N6m5E8VLjObPEO+mN2t/FZTMZLiFqPWc/ALSqnMnnhwrNi2rbfg/rd/IpL8Le3pSBne8+seeFVBoGqzHM9yXw==
         ' >> "$SSH_CONFIG_DIR/known_hosts"
         fi
@@ -102,23 +96,19 @@ steps:
         cd "<< parameters.path >>"
 
         # Define Tag Fetch args
-        if [ -n "$CIRCLE_TAG" ]
-        then
+        if [ -n "$CIRCLE_TAG" ]; then
           # only tags operation have default --tags. others will no tag options
           tag_args="--tags"
         fi
-        if [ '<< parameters.no_tags >>' == 'true' ]
-        then
+        if [ '<< parameters.no_tags >>' == 'true' ]; then
           tag_args="--no-tags"
         fi
 
-        # Fetch remote and check the commit ID of the checked out code
-        if [ -n "$CIRCLE_TAG" ]
-        then
+        # Fetch remote and check the commit ID of the checked out code (sh version of bash `elif [[ "$CIRCLE_BRANCH" =~ ^pull\/* ]]`)
+        if [ -n "$CIRCLE_TAG" ]; then
           # tag
           git fetch ${tag_args} --depth << parameters.fetch_depth >> --force origin "+refs/tags/${CIRCLE_TAG}:refs/tags/${CIRCLE_TAG}"
-        elif [[ $(echo $CIRCLE_BRANCH | grep -E ^pull\/[0-9]+$) ]] # sh version of bash `elif [[ "$CIRCLE_BRANCH" =~ ^pull\/[0-9]+$  ]]`
-        then
+        elif [[ $(echo $CIRCLE_BRANCH | grep -E ^pull\/[0-9]+$) ]]; then
           # pull request
           git fetch ${tag_args} --depth << parameters.fetch_depth >> --force origin "${CIRCLE_BRANCH}/head:remotes/origin/${CIRCLE_BRANCH}"
         else
@@ -127,13 +117,11 @@ steps:
         fi
 
         # Check the commit ID of the checked out code
-        if [ -n "$CIRCLE_TAG" ]
-        then
+        if [ -n "$CIRCLE_TAG" ]; then
           echo 'Checking out tag'
           git reset --hard "$CIRCLE_SHA1"
           git checkout -q "$CIRCLE_TAG"
-        elif [ -n "$CIRCLE_BRANCH" ] && [ "$CIRCLE_BRANCH" != 'HEAD' ]
-        then
+        elif [ -n "$CIRCLE_BRANCH" ] && [ "$CIRCLE_BRANCH" != 'HEAD' ]; then
           echo 'Checking out branch'
           git reset --hard "$CIRCLE_SHA1"
           git checkout -q -B "$CIRCLE_BRANCH"
