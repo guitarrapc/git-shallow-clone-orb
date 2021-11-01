@@ -120,6 +120,18 @@ jobs:
     steps:
       - git-shallow-clone/checkout:
           path: src
+  integration-test-checkout_submodule:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - git-shallow-clone/checkout
+      - run: git submodule sync
+      - run: git submodule update --init
+      - run: |
+          set -e
+          ls -l | wc -l
+          count=$(ls -l | wc -l)
+          if [ $count -eq 0 ]; then exit 1; fi
   integration-test-checkout_tags:
     docker:
       - image: cimg/base:stable
@@ -180,6 +192,7 @@ workflows:
       #- integration-test-checkout_macos
       - integration-test-checkout_notags
       - integration-test-checkout_path
+      - integration-test-checkout_submodule
       - integration-test-checkout_tags
 
       # Publish a semver version of the orb. relies on
@@ -207,6 +220,7 @@ workflows:
             #- integration-test-checkout_macos
             - integration-test-checkout_notags
             - integration-test-checkout_path
+            - integration-test-checkout_submodule
             - integration-test-checkout_tags
           filters:
             branches:
