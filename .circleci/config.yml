@@ -52,6 +52,20 @@ jobs:
           git tag --list
           count=$(git tag --list | wc -l)
           if [ $count -ne 0 ]; then exit 1; fi
+  integration-test-checkout_advanced_submodule:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - git-shallow-clone/checkout_advanced
+      - run: git submodule sync
+      - run: git submodule update --init
+      - run:
+          name: "test submodule is successfully init"
+          command: |
+            set -e
+            ls -l | wc -l
+            count=$(ls -l | wc -l)
+            if [ $count -eq 0 ]; then exit 1; fi
   integration-test-checkout_advanced_tags:
     docker:
       - image: cimg/base:stable
@@ -183,6 +197,7 @@ workflows:
       - integration-test-checkout_advanced
       - integration-test-checkout_advanced_fetchoptions
       - integration-test-checkout_advanced_notags
+      - integration-test-checkout_advanced_submodule
       - integration-test-checkout_advanced_tags
       - integration-test-checkout_alpine
       - integration-test-checkout_depth
@@ -211,6 +226,7 @@ workflows:
             - integration-test-checkout_advanced
             - integration-test-checkout_advanced_fetchoptions
             - integration-test-checkout_advanced_notags
+            - integration-test-checkout_advanced_submodule
             - integration-test-checkout_advanced_tags
             - integration-test-checkout_alpine
             - integration-test-checkout_depth
