@@ -1,0 +1,3 @@
+[submodule "empty-repo-submodule"]
+	path = empty-repo-submodule
+	url = https://github.com/guitarrapc/empty-repo-submodule
