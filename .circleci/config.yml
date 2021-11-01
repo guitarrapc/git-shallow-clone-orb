@@ -21,6 +21,19 @@ parameters:
 
 jobs:
   # Define one or more jobs which will utilize your orb's commands and parameters to validate your changes.
+  standard-checkout:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - checkout
+      - run:
+          name: "test .ssh is exists"
+          command: |
+            set -e
+            if [ ! -d "${HOME}/.ssh" ]; then exit 1;fi
+            if [ ! -f "${HOME}/.ssh/known_hosts" ]; then exit 1;fi
+            if [ ! -f "${HOME}/.ssh/id_rsa" ]; then exit 1;fi # shold not be size 0
+            ls ${HOME}/.ssh -la
   integration-test-checkout:
     docker:
       - image: cimg/base:stable
@@ -31,9 +44,8 @@ jobs:
           command: |
             set -e
             if [ ! -d "${HOME}/.ssh" ]; then exit 1;fi
-            if [ ! -f "${HOME}/.ssh/known_hosts]; then exit 1;fi
-            if [ ! -f "${HOME}/.ssh/id_rsa]; then exit 1;fi
-            # if [ ! -f "${HOME}/.ssh/id_rsa.pub]; then exit 1;fi
+            if [ ! -f "${HOME}/.ssh/known_hosts" ]; then exit 1;fi
+            if [ ! -f "${HOME}/.ssh/id_rsa" ]; then exit 1;fi # shold not be size 0
             ls ${HOME}/.ssh -la
   integration-test-checkout_advanced:
     docker:
@@ -45,9 +57,8 @@ jobs:
           command: |
             set -e
             if [ ! -d "${HOME}/.ssh" ]; then exit 1;fi
-            if [ ! -f "${HOME}/.ssh/known_hosts]; then exit 1;fi
-            if [ ! -f "${HOME}/.ssh/id_rsa]; then exit 1;fi
-            # if [ ! -f "${HOME}/.ssh/id_rsa.pub]; then exit 1;fi
+            if [ ! -f "${HOME}/.ssh/known_hosts" ]; then exit 1;fi
+            if [ ! -f "${HOME}/.ssh/id_rsa" ]; then exit 1;fi # shold not be size 0
             ls ${HOME}/.ssh -la
   integration-test-checkout_advanced_fetchoptions:
     docker:
@@ -72,6 +83,19 @@ jobs:
             git tag --list
             count=$(git tag --list | wc -l)
             if [ $count -ne 0 ]; then exit 1; fi
+  integration-test-checkout_advanced_sshkey:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - git-shallow-clone/checkout_advanced
+      - run:
+          name: "test .ssh is exists"
+          command: |
+            set -e
+            if [ ! -d "${HOME}/.ssh" ]; then exit 1;fi
+            if [ ! -f "${HOME}/.ssh/known_hosts" ]; then exit 1;fi
+            if [ ! -f "${HOME}/.ssh/id_rsa" ]; then exit 1;fi # shold not be size 0
+            ls ${HOME}/.ssh -la
   integration-test-checkout_advanced_submodule:
     docker:
       - image: cimg/base:stable
@@ -158,6 +182,19 @@ jobs:
     steps:
       - git-shallow-clone/checkout:
           path: src
+  integration-test-checkout_sshkey:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - git-shallow-clone/checkout
+      - run:
+          name: "test .ssh is exists"
+          command: |
+            set -e
+            if [ ! -d "${HOME}/.ssh" ]; then exit 1;fi
+            if [ ! -f "${HOME}/.ssh/known_hosts" ]; then exit 1;fi
+            if [ ! -f "${HOME}/.ssh/id_rsa" ]; then exit 1;fi # shold not be size 0
+            ls ${HOME}/.ssh -la
   integration-test-checkout_submodule:
     docker:
       - image: cimg/base:stable
@@ -223,6 +260,7 @@ workflows:
       - integration-test-checkout_advanced
       - integration-test-checkout_advanced_fetchoptions
       - integration-test-checkout_advanced_notags
+      - integration-test-checkout_advanced_sshkey
       - integration-test-checkout_advanced_submodule
       - integration-test-checkout_advanced_tags
       - integration-test-checkout_alpine
@@ -233,8 +271,10 @@ workflows:
       #- integration-test-checkout_macos
       - integration-test-checkout_notags
       - integration-test-checkout_path
+      - integration-test-checkout_sshkey
       - integration-test-checkout_submodule
       - integration-test-checkout_tags
+      - standard-checkout
 
       # Publish a semver version of the orb. relies on
       # the commit subject containing the text "[semver:patch|minor|major|skip]"
@@ -252,6 +292,7 @@ workflows:
             - integration-test-checkout_advanced
             - integration-test-checkout_advanced_fetchoptions
             - integration-test-checkout_advanced_notags
+            - integration-test-checkout_advanced_sshkey
             - integration-test-checkout_advanced_submodule
             - integration-test-checkout_advanced_tags
             - integration-test-checkout_alpine
@@ -262,8 +303,10 @@ workflows:
             #- integration-test-checkout_macos
             - integration-test-checkout_notags
             - integration-test-checkout_path
+            - integration-test-checkout_sshkey
             - integration-test-checkout_submodule
             - integration-test-checkout_tags
+            - standard-checkout
           filters:
             branches:
               only:
