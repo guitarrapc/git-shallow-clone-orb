@@ -42,6 +42,7 @@ steps:
       command: |
         #!/bin/sh
         set -ex
+
         # Workaround old docker images with incorrect $HOME
         # check https://github.com/docker/docker/issues/2968 for details
         if [ "${HOME}" = "/" ]
@@ -49,33 +50,47 @@ steps:
           export HOME=$(getent passwd $(id -un) | cut -d: -f6)
         fi
 
-        # known_hosts
-        mkdir -p ~/.ssh
+        # known_hosts / id_rsa
+        export SSH_CONFIG_DIR=${SSH_CONFIG_DIR:-"${HOME}/.ssh"}
+        echo "Using SSH Config Dir '$SSH_CONFIG_DIR'"
+        git --version
+
+        mkdir -p "$SSH_CONFIG_DIR"
+        chmod 0700 "$SSH_CONFIG_DIR"
+
         if [ -x "$(command -v ssh-keyscan)" ] && ([ "<< parameters.keyscan_github >>" == "true" ] || [ "<< parameters.keyscan_bitbucket >>" == "true" ])
         then
           if [ "<< parameters.keyscan_github >>" == "true" ]
           then
-            ssh-keyscan -H github.com >> ~/.ssh/known_hosts
+            ssh-keyscan -H github.com >> "$SSH_CONFIG_DIR/known_hosts"
           fi
           if [ "<< parameters.keyscan_bitbucket >>" == "true" ]
           then
-            ssh-keyscan -H bitbucket.org >> ~/.ssh/known_hosts
+            ssh-keyscan -H bitbucket.org >> "$SSH_CONFIG_DIR/known_hosts"
           fi
         fi
+
         if [ "<< parameters.keyscan_github >>" != "true" ]
         then
           echo 'github.com ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAq2A7hRGmdnm9tUDbO9IDSwBK6TbQa+PXYPCPy6rbTrTtw7PHkccKrpp0yVhp5HdEIcKr6pLlVDBfOLX9QUsyCOV0wzfjIJNlGEYsdlLJizHhbn2mUjvSAHQqZETYP81eFzLQNnPHt4EVVUh7VfDESU84KezmD5QlWpXLmvU31/yMf+Se8xhHTvKSCZIFImWwoG6mbUoWf9nzpIoaSjB+weqqUUmpaaasXVal72J+UX2B+2RPW3RcT0eOzQgqlJL3RKrTJvdsjE3JEAvGq3lGHSZXy28G3skua2SmVi/w4yCE6gbODqnTWlg7+wC604ydGXA8VJiS5ap43JXiUFFAaQ==
-        ' >> ~/.ssh/known_hosts
+        ' >> "$SSH_CONFIG_DIR/known_hosts"
         fi
+
         if [ "<< parameters.keyscan_bitbucket >>" != "true" ]
         then
           echo 'bitbucket.org ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAubiN81eDcafrgMeLzaFPsw2kNvEcqTKl/VqLat/MaB33pZy0y3rJZtnqwR2qOOvbwKZYKiEO1O6VqNEBxKvJJelCq0dTXWT5pbO2gDXC6h6QDXCaHo6pOHGPUy+YBaGQRGuSusMEASYiWunYN0vCAI8QaXnWMXNMdFP3jHAJH0eDsoiGnLPBlBp4TNm6rYI74nMzgz3B9IikW4WVK+dc8KZJZWYjAuORU3jc1c/NPskD2ASinf8v3xnfXeukU0sJ5N6m5E8VLjObPEO+mN2t/FZTMZLiFqPWc/ALSqnMnnhwrNi2rbfg/rd/IpL8Le3pSBne8+seeFVBoGqzHM9yXw==
-        ' >> ~/.ssh/known_hosts
+        ' >> "$SSH_CONFIG_DIR/known_hosts"
         fi
+        chmod 0600 "$SSH_CONFIG_DIR/known_hosts"
 
-        (umask 077; touch ~/.ssh/id_rsa)
-        chmod 0600 ~/.ssh/id_rsa
-        (echo $CHECKOUT_KEY > ~/.ssh/id_rsa)
+        rm -f "$SSH_CONFIG_DIR/id_rsa"
+        (umask 077; touch "$SSH_CONFIG_DIR/id_rsa")
+        printf "%s" "$CHECKOUT_KEY" > "$SSH_CONFIG_DIR/id_rsa"
+        chmod 0600 "$SSH_CONFIG_DIR/id_rsa"
+        if (: "${CHECKOUT_KEY_PUBLIC?}") 2>/dev/null; then
+          rm -f "$SSH_CONFIG_DIR/id_rsa.pub"
+          printf "%s" "$CHECKOUT_KEY_PUBLIC" > "$SSH_CONFIG_DIR/id_rsa.pub"
+        fi
 
         # use git+ssh instead of https
         git config --global url."ssh://git@github.com".insteadOf "https://github.com" || true
@@ -102,10 +117,12 @@ steps:
         # Check the commit ID of the checked out code
         if [ -n "$CIRCLE_TAG" ]
         then
+          echo 'Checking out tag'
           git reset --hard "$CIRCLE_SHA1"
           git checkout -q "$CIRCLE_TAG"
         elif [ -n "$CIRCLE_BRANCH" ] && [ "$CIRCLE_BRANCH" != 'HEAD' ]
         then
+          echo 'Checking out branch'
           git reset --hard "$CIRCLE_SHA1"
           git checkout -q -B "$CIRCLE_BRANCH"
         fi
