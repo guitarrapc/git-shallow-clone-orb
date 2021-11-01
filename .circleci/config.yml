@@ -26,11 +26,29 @@ jobs:
       - image: cimg/base:stable
     steps:
       - git-shallow-clone/checkout
+      - run:
+          name: "test .ssh is exists"
+          command: |
+            set -e
+            if [ ! -d "${HOME}/.ssh" ]; then exit 1;fi
+            if [ ! -f "${HOME}/.ssh/known_hosts]; then exit 1;fi
+            if [ ! -f "${HOME}/.ssh/id_rsa]; then exit 1;fi
+            # if [ ! -f "${HOME}/.ssh/id_rsa.pub]; then exit 1;fi
+            ls ${HOME}/.ssh -la
   integration-test-checkout_advanced:
     docker:
       - image: cimg/base:stable
     steps:
       - git-shallow-clone/checkout_advanced
+      - run:
+          name: "test .ssh is exists"
+          command: |
+            set -e
+            if [ ! -d "${HOME}/.ssh" ]; then exit 1;fi
+            if [ ! -f "${HOME}/.ssh/known_hosts]; then exit 1;fi
+            if [ ! -f "${HOME}/.ssh/id_rsa]; then exit 1;fi
+            # if [ ! -f "${HOME}/.ssh/id_rsa.pub]; then exit 1;fi
+            ls ${HOME}/.ssh -la
   integration-test-checkout_advanced_fetchoptions:
     docker:
       - image: cimg/base:stable
