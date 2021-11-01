@@ -177,7 +177,7 @@ workflows:
       - integration-test-checkout_fetchdepth
       - integration-test-checkout_keyscan_bitbucket
       - integration-test-checkout_keyscan_github
-      - integration-test-checkout_macos
+      #- integration-test-checkout_macos
       - integration-test-checkout_notags
       - integration-test-checkout_path
       - integration-test-checkout_tags
@@ -204,7 +204,7 @@ workflows:
             - integration-test-checkout_fetchdepth
             - integration-test-checkout_keyscan_bitbucket
             - integration-test-checkout_keyscan_github
-            - integration-test-checkout_macos
+            #- integration-test-checkout_macos
             - integration-test-checkout_notags
             - integration-test-checkout_path
             - integration-test-checkout_tags
