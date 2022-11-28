@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  git-shallow-clone: guitarrapc/git-shallow-clone@dev:alpha
+  git-shallow-clone: guitarrapc/git-shallow-clone@dev:<<pipeline.git.revision>>
   orb-tools: circleci/orb-tools@10.0.5
 
 # Pipeline Parameters
