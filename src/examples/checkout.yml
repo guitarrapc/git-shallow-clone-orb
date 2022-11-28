@@ -27,10 +27,8 @@ description: |
 
 usage:
   version: 2.1
-
   orbs:
     git-shallow-clone: guitarrapc/git-shallow-clone@x.y.z
-
   workflows:
     build:
       jobs:
