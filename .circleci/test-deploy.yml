@@ -24,8 +24,8 @@ jobs:
       - image: cimg/base:stable
     steps:
       - git-shallow-clone/checkout_advanced:
-          clone_options: '--shallow-since "2 years ago"'
-          fetch_options: '--shallow-since "2 years ago"'
+          clone_options: '--shallow-since "2022-10-10"'
+          fetch_options: '--shallow-since "2022-10-10"'
   integration-test-checkout_advanced_notags:
     docker:
       - image: cimg/base:stable
@@ -34,12 +34,20 @@ jobs:
           clone_options: "--depth 1"
           fetch_options: "--depth 1000 --no-tags"
           tag_fetch_options: "--no-tags"
-      # should be no tags
+      # should be no tags on PR. should be 1 tag on tag push.
       - run: |
           set -e
           git tag --list
           count=$(git tag --list | wc -l)
-          if [ $count -ne 0 ]; then exit 1; fi
+          if [ "${CIRCLE_TAG}" != "" ]; then
+            if [ $count -ne 0 ]; then
+              exit 0
+            fi
+          else
+            if [ $count -ne 0 ]; then
+              exit 1
+            fi
+          fi
   integration-test-checkout_advanced_tags:
     docker:
       - image: cimg/base:stable
@@ -96,12 +104,20 @@ jobs:
       - git-shallow-clone/checkout:
           fetch_depth: 1000
           no_tags: true
-      # should be no tags
+      # should be no tags on PR. should be 1 tag on tag push.
       - run: |
           set -e
           git tag --list
           count=$(git tag --list | wc -l)
-          if [ $count -ne 0 ]; then exit 1; fi
+          if [ "${CIRCLE_TAG}" != "" ]; then
+            if [ $count -ne 0 ]; then
+              exit 0
+            fi
+          else
+            if [ $count -ne 0 ]; then
+              exit 1
+            fi
+          fi
   integration-test-checkout_path:
     docker:
       - image: cimg/base:stable
