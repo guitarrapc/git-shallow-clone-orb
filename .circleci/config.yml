@@ -16,6 +16,7 @@ workflows:
       - orb-tools/pack:
           filters: *filters
       - orb-tools/review:
+          max_command_length: 10000
           filters: *filters
       - shellcheck/check:
           filters: *filters
