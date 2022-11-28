@@ -31,7 +31,7 @@ jobs:
       - image: cimg/base:stable
     steps:
       - git-shallow-clone/checkout_advanced:
-          clone_options: "--depth 1"
+          clone_options: "--depth 1 --no-tags"
           fetch_options: "--depth 1000 --no-tags"
           tag_fetch_options: "--no-tags"
       # should be no tags on PR. should be 1 tag on tag push.
