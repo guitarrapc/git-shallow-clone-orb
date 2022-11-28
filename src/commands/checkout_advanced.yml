@@ -99,12 +99,11 @@ steps:
         if [ -n "$CIRCLE_TAG" ]; then
           # tag
           git fetch << parameters.tag_fetch_options >> << parameters.fetch_options >> --force origin "+refs/tags/${CIRCLE_TAG}:refs/tags/${CIRCLE_TAG}"
-        elif [[ $(echo $CIRCLE_BRANCH | grep -e ^pull\/*) ]]; then
-          # pull request
+        elif [[ $(echo $CIRCLE_BRANCH | grep -E ^pull\/[0-9]+$) ]]; then
           git fetch << parameters.fetch_options >> --force origin "${CIRCLE_BRANCH}/head:remotes/origin/${CIRCLE_BRANCH}"
         else
           # others
-          git fetch << parameters.fetch_options >> --force origin "$CIRCLE_BRANCH:remotes/origin/$CIRCLE_BRANCH"
+          git fetch << parameters.fetch_options >> --force origin "${CIRCLE_BRANCH}:remotes/origin/${CIRCLE_BRANCH}"
         fi
 
         # Check the commit ID of the checked out code
