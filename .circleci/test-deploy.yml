@@ -24,14 +24,14 @@ jobs:
       - image: cimg/base:stable
     steps:
       - git-shallow-clone/checkout_advanced:
-          clone_options: '--shallow-since "2022-10-10"'
-          fetch_options: '--shallow-since "2022-10-10"'
+          clone_options: "--depth 100 --single-branch"
+          fetch_options: "--depth 5"
   integration-test-checkout_advanced_notags:
     docker:
       - image: cimg/base:stable
     steps:
       - git-shallow-clone/checkout_advanced:
-          clone_options: "--depth 1"
+          clone_options: "--depth 1 --no-tags"
           fetch_options: "--depth 1000 --no-tags"
           tag_fetch_options: "--no-tags"
       # should be no tags on PR. should be 1 tag on tag push.

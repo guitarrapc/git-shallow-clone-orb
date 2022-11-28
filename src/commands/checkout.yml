@@ -93,29 +93,31 @@ steps:
         git config --global url."ssh://git@github.com".insteadOf "https://github.com" || true
         git config --global gc.auto 0 || true
 
-        # checkout
-        git clone --depth << parameters.depth >> $CIRCLE_REPOSITORY_URL "<< parameters.path >>"
-        cd "<< parameters.path >>"
-
-        # Define Tag Fetch args
+        # Define Tag args
         if [ -n "$CIRCLE_TAG" ]; then
           # only tags operation have default --tags. others will no tag options
-          tag_args="--tags"
+          clone_tag_args=
+          fetch_tag_args="--tags"
         fi
         if [ '<< parameters.no_tags >>' == 'true' ]; then
-          tag_args="--no-tags"
+          clone_tag_args="--no-tags"
+          fetch_tag_args="--no-tags"
         fi
+
+        # checkout
+        git clone ${clone_tag_args} --depth << parameters.depth >> $CIRCLE_REPOSITORY_URL "<< parameters.path >>"
+        cd "<< parameters.path >>"
 
         # Fetch remote and check the commit ID of the checked out code (sh version of bash `elif [[ "$CIRCLE_BRANCH" =~ ^pull\/* ]]`)
         if [ -n "$CIRCLE_TAG" ]; then
           # tag
-          git fetch ${tag_args} --depth << parameters.fetch_depth >> --force origin "+refs/tags/${CIRCLE_TAG}:refs/tags/${CIRCLE_TAG}"
+          git fetch ${fetch_tag_args} --depth << parameters.fetch_depth >> --force origin "+refs/tags/${CIRCLE_TAG}:refs/tags/${CIRCLE_TAG}"
         elif [[ $(echo $CIRCLE_BRANCH | grep -E ^pull\/[0-9]+$) ]]; then
           # pull request
-          git fetch ${tag_args} --depth << parameters.fetch_depth >> --force origin "${CIRCLE_BRANCH}/head:remotes/origin/${CIRCLE_BRANCH}"
+          git fetch ${fetch_tag_args} --depth << parameters.fetch_depth >> --force origin "${CIRCLE_BRANCH}/head:remotes/origin/${CIRCLE_BRANCH}"
         else
           # others
-          git fetch ${tag_args} --depth=<< parameters.fetch_depth >> --force origin "$CIRCLE_BRANCH:remotes/origin/$CIRCLE_BRANCH"
+          git fetch ${fetch_tag_args} --depth=<< parameters.fetch_depth >> --force origin "$CIRCLE_BRANCH:remotes/origin/$CIRCLE_BRANCH"
         fi
 
         # Check the commit ID of the checked out code
