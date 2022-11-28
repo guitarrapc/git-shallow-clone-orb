@@ -1,6 +1,7 @@
 ## git-shallow-clone-orb
 [![CircleCI](https://circleci.com/gh/guitarrapc/git-shallow-clone-orb.svg?style=svg)](https://circleci.com/gh/guitarrapc/git-shallow-clone-orb) ![Orb Version Badge](https://badges.circleci.com/orbs/guitarrapc/git-shallow-clone.svg)
 
+
 ## Usage
 
 See the [orb registry listing](http://circleci.com/orbs/registry/orb/guitarrapc/git-shallow-clone) for usage guidelines.
