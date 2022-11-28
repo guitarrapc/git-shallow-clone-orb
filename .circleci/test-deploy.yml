@@ -120,6 +120,18 @@ jobs:
           git tag --list
           count=$(git tag --list | wc -l)
           if [ $count -eq 0 ]; then exit 1; fi
+  integration-test-api-dispatch:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - run: |
+          set -e
+          curl -X POST --location "https://circleci.com/api/v2/project/gh/guitarrapc/git-shallow-clone-test/pipeline" \
+          -H "Content-Type: application/json" \
+          -H "Circle-Token: $CIRCLECI_API_TOKEN" \
+          -d '{
+              "branch": "pull/2/head"
+              }'
 workflows:
   test-deploy:
     jobs:
@@ -156,6 +168,9 @@ workflows:
           filters: *filters
       - integration-test-checkout_tags:
           filters: *filters
+      - integration-test-api-dispatch:
+          filters: *filters
+          context: api
       - orb-tools/pack:
           filters: *filters
       - orb-tools/publish:
