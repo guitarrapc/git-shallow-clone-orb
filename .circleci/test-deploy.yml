@@ -24,8 +24,8 @@ jobs:
       - image: cimg/base:stable
     steps:
       - git-shallow-clone/checkout_advanced:
-          clone_options: '--shallow-since "5 days ago"'
-          fetch_options: '--shallow-since "5 days ago"'
+          clone_options: '--shallow-since "2 years ago"'
+          fetch_options: '--shallow-since "2 years ago"'
   integration-test-checkout_advanced_notags:
     docker:
       - image: cimg/base:stable
