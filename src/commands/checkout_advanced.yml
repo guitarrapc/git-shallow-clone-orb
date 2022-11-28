@@ -99,15 +99,8 @@ steps:
         if [ -n "$CIRCLE_TAG" ]; then
           # tag
           git fetch << parameters.tag_fetch_options >> << parameters.fetch_options >> --force origin "+refs/tags/${CIRCLE_TAG}:refs/tags/${CIRCLE_TAG}"
-        elif [ $(echo $CIRCLE_BRANCH | grep -e ^pull\/*) ]; then
-          # pull request
-          if [ $(echo $CIRCLE_BRANCH | grep -e .*\/head$) ]; then
-            # remove /head from CIRCLE_BRANCH
-            headless_CIRCLE_BRANCH=$(echo $CIRCLE_BRANCH | rev | cut -c6- | rev)
-            git fetch << parameters.fetch_options >> --force origin "${headless_CIRCLE_BRANCH}/head:remotes/origin/${CIRCLE_BRANCH}"
-          else
-            git fetch << parameters.fetch_options >> --force origin "${CIRCLE_BRANCH}/head:remotes/origin/${CIRCLE_BRANCH}"
-          fi
+        elif [[ $(echo $CIRCLE_BRANCH | grep -E ^pull\/[0-9]+$) ]]; then
+          git fetch << parameters.fetch_options >> --force origin "${CIRCLE_BRANCH}/head:remotes/origin/${CIRCLE_BRANCH}"
         else
           # others
           git fetch << parameters.fetch_options >> --force origin "${CIRCLE_BRANCH}:remotes/origin/${CIRCLE_BRANCH}"
