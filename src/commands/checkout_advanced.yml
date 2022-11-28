@@ -1,6 +1,7 @@
-description: |
-  checkout by git shallow clone with git options. Support Alpine, Ubuntu, Debian and others.
-  eval is used in step, Fish shell is not supported.
+description: >
+  Provides git shallow clone instead of full clone.
+  This command is for advaned usage when you need options for clone, fetch and tag fetch.
+  eval is used in step and Fish shell is not supported.
 parameters:
   clone_options:
     type: string
@@ -33,7 +34,7 @@ parameters:
     default: false
   path:
     description: >
-      Checkout directory (default: job’s working_directory)
+      Checkout directory (default: job working_directory)
     type: string
     default: .
 steps:

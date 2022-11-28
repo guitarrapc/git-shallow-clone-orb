@@ -1,4 +1,6 @@
-description: checkout by git shallow clone. Support Alpine, Ubuntu, Debian and others.
+description: >
+  Provides git shallow clone instead of full clone.
+  This command is for simple usage when you don't need options for clone, fetch and tag fetch.
 parameters:
   depth:
     description: >
@@ -32,7 +34,7 @@ parameters:
     default: false
   path:
     description: >
-      Checkout directory (default: job’s working_directory)
+      Checkout directory (default: job working_directory)
     type: string
     default: .
 steps:

@@ -1,7 +1,7 @@
 version: 2.1
 
-description: |
-  Orb to provide git shallow clone.
+description: >
+  Provides git shallow clone instead of full clone.
   Supporting trigger for tag, pull_request and push, works on Alpine, Debian, Ubuntu, macOS.
 
   Provied commands:
