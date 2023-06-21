@@ -12,12 +12,7 @@ We welcome [issues](https://github.com/guitarrapc/git-shallow-clone-orb/issues) 
 
 ## Publish
 
-To publish orb, add commit message `[semver:patch|minor|major|skip]` on master branch's commit.
-
-* [semver:patch]
-* [semver:minor]
-* [semver:major]
-* [semver:skip]
+To publish orb, push new tag to remote.
 
 ## Add Test
 
