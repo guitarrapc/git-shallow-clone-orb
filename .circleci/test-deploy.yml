@@ -25,6 +25,12 @@ jobs:
       - image: cimg/base:stable
     steps:
       - git-shallow-clone/checkout_advanced
+  integration-test-checkout_advanced_alpine:
+    docker:
+      - image: circleci/redis:alpine3.13
+    steps:
+      - run: apk update && apk add openssh git # openssh is required
+      - git-shallow-clone/checkout_advanced
   integration-test-checkout_advanced_fetchoptions:
     docker:
       - image: cimg/base:stable
@@ -119,7 +125,7 @@ jobs:
           keyscan_github: true
   integration-test-checkout_macos:
     macos:
-      xcode: 13.0.0
+      xcode: 15.0.0 # see: https://circleci.com/docs/using-macos/
     steps:
       - git-shallow-clone/checkout
   integration-test-checkout_notags:
@@ -201,6 +207,8 @@ workflows:
           filters: *filters
       - integration-test-checkout_advanced:
           filters: *filters
+      - integration-test-checkout_advanced_alpine:
+          filters: *filters
       - integration-test-checkout_advanced_fetchoptions:
           filters: *filters
       # - integration-test-checkout_advanced_macos:
@@ -244,6 +252,7 @@ workflows:
             - orb-tools/pack
             - integration-test-checkout
             - integration-test-checkout_advanced
+            - integration-test-checkout_advanced_alpine
             - integration-test-checkout_advanced_fetchoptions
             #- integration-test-checkout_advanced_macos
             - integration-test-checkout_advanced_notags
