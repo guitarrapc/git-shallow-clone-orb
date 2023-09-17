@@ -36,7 +36,7 @@ jobs:
     macos:
       xcode: 15.0.0 # see: https://circleci.com/docs/using-macos/
     steps:
-      - git-shallow-clone/checkout_advaned
+      - git-shallow-clone/checkout_advanced
   integration-test-checkout_advanced_notags:
     docker:
       - image: cimg/base:stable
