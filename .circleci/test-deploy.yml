@@ -48,6 +48,20 @@ jobs:
               exit 1
             fi
           fi
+  integration-test-checkout_advanced_sourcecaching:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - restore_cache:
+          keys:
+            - &source-cache source-v1-checkoutadvanced-{{ .Branch }}-{{ .Revision }}
+            - source-v1-checkoutadvanced-{{ .Branch }}-
+            - source-v1-checkoutadvanced-
+      - git-shallow-clone/checkout_advanced
+      - save_cache:
+          key: *source-cache
+          paths:
+            - ".git"
   integration-test-checkout_advanced_tags:
     docker:
       - image: cimg/base:stable
@@ -124,6 +138,20 @@ jobs:
     steps:
       - git-shallow-clone/checkout:
           path: src
+  integration-test-checkout_sourcechching:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - restore_cache:
+          keys:
+            - &source-cache source-v1-checkout-{{ .Branch }}-{{ .Revision }}
+            - source-v1-checkout-{{ .Branch }}-
+            - source-v1-checkout-
+      - git-shallow-clone/checkout
+      - save_cache:
+          key: *source-cache
+          paths:
+            - ".git"
   integration-test-checkout_tags:
     docker:
       - image: cimg/base:stable
@@ -164,6 +192,8 @@ workflows:
           filters: *filters
       - integration-test-checkout_advanced_notags:
           filters: *filters
+      - integration-test-checkout_advanced_sourcecaching:
+          filters: *filters
       - integration-test-checkout_advanced_tags:
           filters: *filters
       - integration-test-checkout_alpine:
@@ -181,6 +211,8 @@ workflows:
       - integration-test-checkout_notags:
           filters: *filters
       - integration-test-checkout_path:
+          filters: *filters
+      - integration-test-checkout_sourcechching:
           filters: *filters
       - integration-test-checkout_tags:
           filters: *filters
