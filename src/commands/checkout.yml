@@ -127,6 +127,7 @@ steps:
           git clone ${clone_tag_args} --depth << parameters.depth >> $CIRCLE_REPOSITORY_URL .
         fi
 
+        # NOTE: Original checkout fetch only if SourceCaching, but we fetch always for depth selection.
         echo 'Fetching from remote repository'
         if [ -n "$CIRCLE_TAG" ]; then
           git fetch ${fetch_tag_args} --depth << parameters.fetch_depth >> --force --tags origin
