@@ -127,14 +127,11 @@ steps:
           git clone ${clone_tag_args} --depth << parameters.depth >> $CIRCLE_REPOSITORY_URL .
         fi
 
-        # NOTE: Original is `if [ "$existing_repo" = 'true' ] || [ 'false' = 'true' ]; then` but cannot identify what `[ 'false' = 'true' ]` is. Let's remove it until any info.
-        if [ "$existing_repo" = 'true' ]; then
-          echo 'Fetching from remote repository'
-          if [ -n "$CIRCLE_TAG" ]; then
-            git fetch ${fetch_tag_args} --depth << parameters.fetch_depth >> --force --tags origin
-          else
-            git fetch ${fetch_tag_args} --depth << parameters.fetch_depth >> --force origin +refs/heads/${CIRCLE_BRANCH}:refs/remotes/origin/${CIRCLE_BRANCH}
-          fi
+        echo 'Fetching from remote repository'
+        if [ -n "$CIRCLE_TAG" ]; then
+          git fetch ${fetch_tag_args} --depth << parameters.fetch_depth >> --force --tags origin
+        else
+          git fetch ${fetch_tag_args} --depth << parameters.fetch_depth >> --force origin +refs/heads/${CIRCLE_BRANCH}:refs/remotes/origin/${CIRCLE_BRANCH}
         fi
 
         # Check the commit ID of the checked out code
