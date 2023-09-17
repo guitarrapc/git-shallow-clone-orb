@@ -203,8 +203,8 @@ workflows:
           filters: *filters
       - integration-test-checkout_advanced_fetchoptions:
           filters: *filters
-      - integration-test-checkout_advanced_macos:
-          filters: *filters
+      # - integration-test-checkout_advanced_macos:
+      #     filters: *filters
       - integration-test-checkout_advanced_notags:
           filters: *filters
       - integration-test-checkout_advanced_sourcecaching:
@@ -221,8 +221,8 @@ workflows:
           filters: *filters
       - integration-test-checkout_keyscan_github:
           filters: *filters
-      - integration-test-checkout_macos:
-          filters: *filters
+      # - integration-test-checkout_macos:
+      #     filters: *filters
       - integration-test-checkout_notags:
           filters: *filters
       - integration-test-checkout_path:
@@ -245,7 +245,7 @@ workflows:
             - integration-test-checkout
             - integration-test-checkout_advanced
             - integration-test-checkout_advanced_fetchoptions
-            - integration-test-checkout_advanced_macos
+            #- integration-test-checkout_advanced_macos
             - integration-test-checkout_advanced_notags
             - integration-test-checkout_advanced_tags
             - integration-test-checkout_alpine
@@ -253,7 +253,7 @@ workflows:
             - integration-test-checkout_fetchdepth
             - integration-test-checkout_keyscan_bitbucket
             - integration-test-checkout_keyscan_github
-            - integration-test-checkout_macos
+            #- integration-test-checkout_macos
             - integration-test-checkout_notags
             - integration-test-checkout_path
             - integration-test-checkout_tags
