@@ -214,8 +214,8 @@ workflows:
           filters: *filters
       - integration-test-checkout_keyscan_github:
           filters: *filters
-      # - integration-test-checkout_macos:
-      #     filters: *filters
+      - integration-test-checkout_macos:
+          filters: *filters
       - integration-test-checkout_notags:
           filters: *filters
       - integration-test-checkout_path:
