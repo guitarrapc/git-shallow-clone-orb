@@ -142,5 +142,6 @@ steps:
         elif [ -n "$CIRCLE_BRANCH" ] && [ "$CIRCLE_BRANCH" != 'HEAD' ]; then
           echo 'Checking out branch'
           git checkout --force -B "$CIRCLE_BRANCH"
+          git reset --hard "$CIRCLE_SHA1"
           git --no-pager log --no-color -n 1 --format='HEAD is now at %h %s'
         fi
