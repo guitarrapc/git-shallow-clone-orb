@@ -130,7 +130,7 @@ steps:
         # NOTE: Original checkout fetch only if SourceCaching, but we fetch always for depth selection.
         echo 'Fetching from remote repository'
         if [ -n "$CIRCLE_TAG" ]; then
-          git fetch ${fetch_tag_args} --depth << parameters.fetch_depth >> --force --tags origin
+          git fetch ${fetch_tag_args} --depth << parameters.fetch_depth >> --force --tags origin "+refs/tags/${CIRCLE_TAG}:refs/tags/${CIRCLE_TAG}"
         else
           git fetch ${fetch_tag_args} --depth << parameters.fetch_depth >> --force origin +refs/heads/${CIRCLE_BRANCH}:refs/remotes/origin/${CIRCLE_BRANCH}
         fi
@@ -139,10 +139,10 @@ steps:
         if [ -n "$CIRCLE_TAG" ]; then
           echo 'Checking out tag'
           git checkout --force "$CIRCLE_TAG"
-          git reset --hard "$CIRCLE_SHA1"
+          git reset --hard "$CIRCLE_SHA1" # move to triggered SHA
         elif [ -n "$CIRCLE_BRANCH" ] && [ "$CIRCLE_BRANCH" != 'HEAD' ]; then
           echo 'Checking out branch'
           git checkout --force -B "$CIRCLE_BRANCH"
-          git reset --hard "$CIRCLE_SHA1"
+          git reset --hard "$CIRCLE_SHA1" # move to triggered SHA
           git --no-pager log --no-color -n 1 --format='HEAD is now at %h %s'
         fi
