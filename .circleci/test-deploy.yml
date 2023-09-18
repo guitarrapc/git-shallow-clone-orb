@@ -4,8 +4,6 @@ orbs:
   orb-tools: circleci/orb-tools@11.5
 
 filters: &filters
-  branches:
-    only: /.*/
   tags:
     only: /.*/
 
