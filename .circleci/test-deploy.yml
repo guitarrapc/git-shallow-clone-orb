@@ -4,10 +4,18 @@ orbs:
   orb-tools: circleci/orb-tools@11.5
 
 filters: &filters
+  branches:
+    only: /.*/
   tags:
     only: /.*/
 
 jobs:
+  normal-checkout:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - checkout
+      - run: git tag --list
   # Define one or more jobs which will utilize your orb's commands and parameters to validate your changes.
   integration-test-checkout:
     docker:
@@ -19,6 +27,12 @@ jobs:
       - image: cimg/base:stable
     steps:
       - git-shallow-clone/checkout_advanced
+  integration-test-checkout_advanced_alpine:
+    docker:
+      - image: circleci/redis:6.2.1-alpine
+    steps:
+      - run: apk update && apk add openssh git # openssh is required
+      - git-shallow-clone/checkout_advanced
   integration-test-checkout_advanced_fetchoptions:
     docker:
       - image: cimg/base:stable
@@ -26,6 +40,11 @@ jobs:
       - git-shallow-clone/checkout_advanced:
           clone_options: "--depth 100 --single-branch"
           fetch_options: "--depth 5"
+  integration-test-checkout_advanced_macos:
+    macos:
+      xcode: 15.0.0 # see: https://circleci.com/docs/using-macos/
+    steps:
+      - git-shallow-clone/checkout_advanced
   integration-test-checkout_advanced_notags:
     docker:
       - image: cimg/base:stable
@@ -48,6 +67,20 @@ jobs:
               exit 1
             fi
           fi
+  integration-test-checkout_advanced_sourcecaching:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - restore_cache:
+          keys:
+            - &source-cache source-v1-checkoutadvanced-{{ .Branch }}-{{ .Revision }}
+            - source-v1-checkoutadvanced-{{ .Branch }}-
+            - source-v1-checkoutadvanced-
+      - git-shallow-clone/checkout_advanced
+      - save_cache:
+          key: *source-cache
+          paths:
+            - ".git"
   integration-test-checkout_advanced_tags:
     docker:
       - image: cimg/base:stable
@@ -63,7 +96,7 @@ jobs:
           if [ $count -eq 0 ]; then exit 1; fi
   integration-test-checkout_alpine:
     docker:
-      - image: circleci/redis:alpine3.13
+      - image: circleci/redis:6.2.1-alpine
     steps:
       - run: apk update && apk add openssh git # openssh is required
       - git-shallow-clone/checkout
@@ -94,7 +127,7 @@ jobs:
           keyscan_github: true
   integration-test-checkout_macos:
     macos:
-      xcode: 13.0.0
+      xcode: 15.0.0 # see: https://circleci.com/docs/using-macos/
     steps:
       - git-shallow-clone/checkout
   integration-test-checkout_notags:
@@ -124,6 +157,20 @@ jobs:
     steps:
       - git-shallow-clone/checkout:
           path: src
+  integration-test-checkout_sourcechching:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - restore_cache:
+          keys:
+            - &source-cache source-v1-checkout-{{ .Branch }}-{{ .Revision }}
+            - source-v1-checkout-{{ .Branch }}-
+            - source-v1-checkout-
+      - git-shallow-clone/checkout
+      - save_cache:
+          key: *source-cache
+          paths:
+            - ".git"
   integration-test-checkout_tags:
     docker:
       - image: cimg/base:stable
@@ -156,13 +203,21 @@ workflows:
       # jobs and commands to ensure they behave as expected. or, run other
       # integration tests of your choosing
       # Run any integration tests defined within the `jobs` key.
+      - normal-checkout:
+          filters: *filters
       - integration-test-checkout:
           filters: *filters
       - integration-test-checkout_advanced:
           filters: *filters
+      - integration-test-checkout_advanced_alpine:
+          filters: *filters
       - integration-test-checkout_advanced_fetchoptions:
           filters: *filters
+      # - integration-test-checkout_advanced_macos:
+      #     filters: *filters
       - integration-test-checkout_advanced_notags:
+          filters: *filters
+      - integration-test-checkout_advanced_sourcecaching:
           filters: *filters
       - integration-test-checkout_advanced_tags:
           filters: *filters
@@ -182,6 +237,8 @@ workflows:
           filters: *filters
       - integration-test-checkout_path:
           filters: *filters
+      - integration-test-checkout_sourcechching:
+          filters: *filters
       - integration-test-checkout_tags:
           filters: *filters
       - integration-test-api-dispatch:
@@ -197,7 +254,9 @@ workflows:
             - orb-tools/pack
             - integration-test-checkout
             - integration-test-checkout_advanced
+            - integration-test-checkout_advanced_alpine
             - integration-test-checkout_advanced_fetchoptions
+            #- integration-test-checkout_advanced_macos
             - integration-test-checkout_advanced_notags
             - integration-test-checkout_advanced_tags
             - integration-test-checkout_alpine
