@@ -4,6 +4,8 @@ orbs:
   orb-tools: circleci/orb-tools@11.5
 
 filters: &filters
+  branches:
+    only: /.*/
   tags:
     only: /.*/
 
@@ -27,7 +29,7 @@ jobs:
       - git-shallow-clone/checkout_advanced
   integration-test-checkout_advanced_alpine:
     docker:
-      - image: circleci/redis:alpine3.13
+      - image: circleci/redis:6.2.1-alpine
     steps:
       - run: apk update && apk add openssh git # openssh is required
       - git-shallow-clone/checkout_advanced
@@ -94,7 +96,7 @@ jobs:
           if [ $count -eq 0 ]; then exit 1; fi
   integration-test-checkout_alpine:
     docker:
-      - image: circleci/redis:alpine3.13
+      - image: circleci/redis:6.2.1-alpine
     steps:
       - run: apk update && apk add openssh git # openssh is required
       - git-shallow-clone/checkout
