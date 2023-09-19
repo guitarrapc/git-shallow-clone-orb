@@ -1,7 +1,6 @@
 description: >
   Provides git shallow clone instead of full clone.
   This command is for advaned usage when you need options for clone, fetch and tag fetch.
-  eval is used in step and Fish shell is not supported.
 parameters:
   clone_options:
     type: string

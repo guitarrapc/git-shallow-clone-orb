@@ -2,8 +2,10 @@ version: 2.1
 
 description: >
   Provides git shallow clone instead of full clone.
-  Supporting trigger for tag, pull_request and push, works on Alpine, Debian, Ubuntu, macOS.
+  Supporting trigger for tag, pull_request and push, works on Alpine, Debian, Ubuntu, and macOS.
 
+  What's shallow clone?
+  - see https://git-scm.com/docs/git-clone#Documentation/git-clone.txt---depthltdepthgt
   Provied commands:
   - checkout
   - checkout_advanced
