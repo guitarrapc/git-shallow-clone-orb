@@ -131,7 +131,7 @@ steps:
         echo 'Fetching from remote repository'
         if [ -n "$CIRCLE_TAG" ]; then
           git fetch ${fetch_tag_args} --depth << parameters.fetch_depth >> --force --tags origin "+refs/tags/${CIRCLE_TAG}:refs/tags/${CIRCLE_TAG}"
-        elif echo $CIRCLE_BRANCH | grep -E ^pull\/[0-9]+$ > /dev/null; then
+        elif echo $CIRCLE_BRANCH | grep -E ^pull\/[0-9]+/head$ > /dev/null; then
           # pull request called from api. see detail for https://github.com/guitarrapc/git-shallow-clone-orb/issues/34
           git fetch ${fetch_tag_args} --depth << parameters.fetch_depth >> --force origin "+refs/${CIRCLE_BRANCH}/head:remotes/origin/${CIRCLE_BRANCH}"
         else
