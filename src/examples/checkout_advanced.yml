@@ -1,24 +1,32 @@
 description: |
-  advanced git shallow clone instead of checkout with clone_options and fetch_options.
-  make sure some options is exclusive each other.
+  Advanced git shallow clone instead of checkout with clone_options and fetch_options.
+  Make sure some options is exclusive each other, you should follow to official git documentation.
   e.g. `--depth N` cannot use with `--shallow-since`.
 
-  # see verbose log on clone
+  # No options will clone depth 1 and fetch depth 10.
   - git-shallow-clone/checkout_advanced
-      clone_options: '--depth 1 --verbose'
-  # use --shallow-since for clone timing, but not for fetch timing.
+  # Clone the repository to specific path `src`.
+  - git-shallow-clone/checkout_advanced
+      path: src
+  # See verbose log on clone.
+  - git-shallow-clone/checkout_advanced
+      clone_options: '--depth 1 --verbose'.
+  # Use --shallow-since for clone timing, but not for fetch timing.
   - git-shallow-clone/checkout_advanced
       clone_options: '--shallow-since "5 days ago"'
-  # use --shallow-since for fetch timing, but not for clone timing.
+  # Use --shallow-since for fetch timing, but not for clone timing.
   - git-shallow-clone/checkout_advanced
       fetch_options: '--shallow-since "5 days ago"'
-  # use --no-tags to skip tag fetch on `PR` and `PUSH`.
+  # Use --no-tags to skip tag fetch.
   - git-shallow-clone/checkout_advanced
       fetch_options: '--depth 10 --no-tags'
-  # use --no-tags to fetch single tag on git `TAG`.
+  # Skip tag fetch.
   - git-shallow-clone/checkout_advanced
-      fetch_options: '--depth 10 --no-tags' # you can omit this.
+      fetch_options: '--depth 10 --no-tags'
       tag_fetch_options: '--no-tags'
+  # Shallow clone then update submodules.
+  - git-shallow-clone/checkout_advanced
+  - run: git submodule update --init --recursive
 
 usage:
   version: 2.1
