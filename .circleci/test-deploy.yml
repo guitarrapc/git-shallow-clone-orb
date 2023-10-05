@@ -97,7 +97,10 @@ jobs:
       - image: cimg/base:stable
     working_directory: ~/test-working-directory
     steps:
+      - run: pwd && ls -la && [ "$(pwd)" == "$HOME/test-working-directory" ] && echo "working directory is correct" || exit 1
       - git-shallow-clone/checkout_advanced
+      # checkout should be clone to `working_directory`.
+      - run: pwd && ls -la && [ -d "$HOME/test-working-directory/.git" ] && echo "git checkout is correct" || exit 1
   integration-test-checkout_alpine:
     docker:
       - image: circleci/redis:6.2.1-alpine
@@ -192,7 +195,10 @@ jobs:
       - image: cimg/base:stable
     working_directory: ~/test-working-directory
     steps:
+      - run: pwd && ls -la && [ "$(pwd)" == "$HOME/test-working-directory" ] && echo "working directory is correct" || exit 1
       - git-shallow-clone/checkout
+      # checkout should be clone to `working_directory`.
+      - run: pwd && ls -la && [ -d "$HOME/test-working-directory/.git" ] && echo "git checkout is correct" || exit 1
   integration-test-api-dispatch:
     docker:
       - image: cimg/base:stable
