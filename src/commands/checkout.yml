@@ -113,8 +113,14 @@ steps:
           fetch_tag_args="--no-tags"
         fi
 
-        # Checkout. Expand `$CIRCLE_WORKING_DIRECTORY`'s ~ to `$HOME` and SourceCaching? or not.
-        working_directory=${CIRCLE_WORKING_DIRECTORY/#\~/$HOME}
+        # Replace "~" in `$CIRCLE_WORKING_DIRECTORY` to `$HOME`
+        if [ "$0" == "/bin/bash" ]; then
+          working_directory=${CIRCLE_WORKING_DIRECTORY/#\~/$HOME}
+        else
+          working_directory=$(echo "$CIRCLE_WORKING_DIRECTORY" | sed -e "s|^~|$HOME|g")
+        fi
+
+        # Checkout. SourceCaching? or not.
         if [ -e "$working_directory/<< parameters.path >>/.git" ]; then
           echo 'Fetching into existing repository'
           existing_repo='true'
