@@ -113,17 +113,18 @@ steps:
           fetch_tag_args="--no-tags"
         fi
 
-        # Checkout. SourceCaching? or not.
-        if [ -e "$CIRCLE_WORKING_DIRECTORY/<< parameters.path >>/.git" ]; then
+        # Checkout. Expand `$CIRCLE_WORKING_DIRECTORY`'s ~ to `$HOME` and SourceCaching? or not.
+        working_directory=${CIRCLE_WORKING_DIRECTORY/#\~/$HOME}
+        if [ -e "$working_directory/<< parameters.path >>/.git" ]; then
           echo 'Fetching into existing repository'
           existing_repo='true'
-          cd "$CIRCLE_WORKING_DIRECTORY/<< parameters.path >>"
+          cd "$working_directory/<< parameters.path >>"
           git remote set-url origin "$CIRCLE_REPOSITORY_URL" || true
         else
           echo 'Cloning git repository'
           existing_repo='false'
-          mkdir -p "$CIRCLE_WORKING_DIRECTORY/<< parameters.path >>"
-          cd "$CIRCLE_WORKING_DIRECTORY/<< parameters.path >>"
+          mkdir -p "$working_directory/<< parameters.path >>"
+          cd "$working_directory/<< parameters.path >>"
           git clone ${clone_tag_args} --depth << parameters.depth >> $CIRCLE_REPOSITORY_URL .
         fi
 
