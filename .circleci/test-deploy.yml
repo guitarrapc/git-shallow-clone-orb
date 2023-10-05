@@ -20,17 +20,23 @@ jobs:
       - image: cimg/base:stable
     steps:
       - git-shallow-clone/checkout
+      - name: test checkout result
+        run: pwd && ls -la && [ -d "$HOME/.git" ] && echo "git checkout is correct" || exit 1
   integration-test-checkout_advanced:
     docker:
       - image: cimg/base:stable
     steps:
       - git-shallow-clone/checkout_advanced
+      - name: test checkout result
+        run: pwd && ls -la && [ -d "$HOME/.git" ] && echo "git checkout is correct" || exit 1
   integration-test-checkout_advanced_alpine:
     docker:
       - image: circleci/redis:6.2.1-alpine
     steps:
       - run: apk update && apk add openssh git # openssh is required
       - git-shallow-clone/checkout_advanced
+      - name: test checkout result
+        run: pwd && ls -la && [ -d "$HOME/.git" ] && echo "git checkout is correct" || exit 1
   integration-test-checkout_advanced_fetchoptions:
     docker:
       - image: cimg/base:stable
@@ -38,11 +44,15 @@ jobs:
       - git-shallow-clone/checkout_advanced:
           clone_options: "--depth 100 --single-branch"
           fetch_options: "--depth 5"
+      - name: test checkout result
+        run: pwd && ls -la && [ -d "$HOME/.git" ] && echo "git checkout is correct" || exit 1
   integration-test-checkout_advanced_macos:
     macos:
       xcode: 15.0.0 # see: https://circleci.com/docs/using-macos/
     steps:
       - git-shallow-clone/checkout_advanced
+      - name: test checkout result
+        run: pwd && ls -la && [ -d "$HOME/.git" ] && echo "git checkout is correct" || exit 1
   integration-test-checkout_advanced_notags:
     docker:
       - image: cimg/base:stable
@@ -65,6 +75,8 @@ jobs:
               exit 1
             fi
           fi
+      - name: test checkout result
+        run: pwd && ls -la && [ -d "$HOME/.git" ] && echo "git checkout is correct" || exit 1
   integration-test-checkout_advanced_sourcecaching:
     docker:
       - image: cimg/base:stable
@@ -79,6 +91,8 @@ jobs:
           key: *source-cache
           paths:
             - ".git"
+      - name: test checkout result
+        run: pwd && ls -la && [ -d "$HOME/.git" ] && echo "git checkout is correct" || exit 1
   integration-test-checkout_advanced_tags:
     docker:
       - image: cimg/base:stable
@@ -92,6 +106,8 @@ jobs:
           git tag --list
           count=$(git tag --list | wc -l)
           if [ $count -eq 0 ]; then exit 1; fi
+      - name: test checkout result
+        run: pwd && ls -la && [ -d "$HOME/.git" ] && echo "git checkout is correct" || exit 1
   integration-test-checkout_advanced_workingdir:
     docker:
       - image: cimg/base:stable
@@ -100,13 +116,16 @@ jobs:
       - run: pwd && ls -la && [ "$(pwd)" == "$HOME/test-working-directory" ] && echo "working directory is correct" || exit 1
       - git-shallow-clone/checkout_advanced
       # checkout should be clone to `working_directory`.
-      - run: pwd && ls -la && [ -d "$HOME/test-working-directory/.git" ] && echo "git checkout is correct" || exit 1
+      - name: test checkout result
+        run: pwd && ls -la && [ -d "$HOME/test-working-directory/.git" ] && echo "git checkout is correct" || exit 1
   integration-test-checkout_alpine:
     docker:
       - image: circleci/redis:6.2.1-alpine
     steps:
       - run: apk update && apk add openssh git # openssh is required
       - git-shallow-clone/checkout
+      - name: test checkout result
+        run: pwd && ls -la && [ -d "$HOME/.git" ] && echo "git checkout is correct" || exit 1
   integration-test-checkout_depth:
     docker:
       - image: cimg/base:stable
@@ -114,29 +133,39 @@ jobs:
       - git-shallow-clone/checkout:
           depth: 5
           fetch_depth: 10
+      - name: test checkout result
+        run: pwd && ls -la && [ -d "$HOME/.git" ] && echo "git checkout is correct" || exit 1
   integration-test-checkout_fetchdepth:
     docker:
       - image: cimg/base:stable
     steps:
       - git-shallow-clone/checkout:
           fetch_depth: 1
+      - name: test checkout result
+        run: pwd && ls -la && [ -d "$HOME/.git" ] && echo "git checkout is correct" || exit 1
   integration-test-checkout_keyscan_bitbucket:
     docker:
       - image: cimg/base:stable
     steps:
       - git-shallow-clone/checkout:
           keyscan_bitbucket: true
+      - name: test checkout result
+        run: pwd && ls -la && [ -d "$HOME/.git" ] && echo "git checkout is correct" || exit 1
   integration-test-checkout_keyscan_github:
     docker:
       - image: cimg/base:stable
     steps:
       - git-shallow-clone/checkout:
           keyscan_github: true
+      - name: test checkout result
+        run: pwd && ls -la && [ -d "$HOME/.git" ] && echo "git checkout is correct" || exit 1
   integration-test-checkout_macos:
     macos:
       xcode: 15.0.0 # see: https://circleci.com/docs/using-macos/
     steps:
       - git-shallow-clone/checkout
+      - name: test checkout result
+        run: pwd && ls -la && [ -d "$HOME/.git" ] && echo "git checkout is correct" || exit 1
   integration-test-checkout_notags:
     docker:
       - image: cimg/base:stable
@@ -158,6 +187,8 @@ jobs:
               exit 1
             fi
           fi
+      - name: test checkout result
+        run: pwd && ls -la && [ -d "$HOME/.git" ] && echo "git checkout is correct" || exit 1
   integration-test-checkout_path:
     docker:
       - image: cimg/base:stable
@@ -178,6 +209,8 @@ jobs:
           key: *source-cache
           paths:
             - ".git"
+      - name: test checkout result
+        run: pwd && ls -la && [ -d "$HOME/.git" ] && echo "git checkout is correct" || exit 1
   integration-test-checkout_tags:
     docker:
       - image: cimg/base:stable
@@ -190,6 +223,8 @@ jobs:
           git tag --list
           count=$(git tag --list | wc -l)
           if [ $count -eq 0 ]; then exit 1; fi
+      - name: test checkout result
+        run: pwd && ls -la && [ -d "$HOME/.git" ] && echo "git checkout is correct" || exit 1
   integration-test-checkout_workingdir:
     docker:
       - image: cimg/base:stable
@@ -198,7 +233,8 @@ jobs:
       - run: pwd && ls -la && [ "$(pwd)" == "$HOME/test-working-directory" ] && echo "working directory is correct" || exit 1
       - git-shallow-clone/checkout
       # checkout should be clone to `working_directory`.
-      - run: pwd && ls -la && [ -d "$HOME/test-working-directory/.git" ] && echo "git checkout is correct" || exit 1
+      - name: test checkout result
+        run: pwd && ls -la && [ -d "$HOME/test-working-directory/.git" ] && echo "git checkout is correct" || exit 1
   integration-test-api-dispatch:
     docker:
       - image: cimg/base:stable
