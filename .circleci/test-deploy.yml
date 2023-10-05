@@ -92,6 +92,12 @@ jobs:
           git tag --list
           count=$(git tag --list | wc -l)
           if [ $count -eq 0 ]; then exit 1; fi
+  integration-test-checkout_advanced_workingdir:
+    docker:
+      - image: cimg/base:stable
+    working_directory: ~/test-working-directory
+    steps:
+      - git-shallow-clone/checkout_advanced
   integration-test-checkout_alpine:
     docker:
       - image: circleci/redis:6.2.1-alpine
@@ -181,6 +187,12 @@ jobs:
           git tag --list
           count=$(git tag --list | wc -l)
           if [ $count -eq 0 ]; then exit 1; fi
+  integration-test-checkout_workingdir:
+    docker:
+      - image: cimg/base:stable
+    working_directory: ~/test-working-directory
+    steps:
+      - git-shallow-clone/checkout
   integration-test-api-dispatch:
     docker:
       - image: cimg/base:stable
@@ -219,6 +231,8 @@ workflows:
           filters: *filters
       - integration-test-checkout_advanced_tags:
           filters: *filters
+      - integration-test-checkout_advanced_workingdir:
+          filters: *filters
       - integration-test-checkout_alpine:
           filters: *filters
       - integration-test-checkout_depth:
@@ -239,6 +253,8 @@ workflows:
           filters: *filters
       - integration-test-checkout_tags:
           filters: *filters
+      - integration-test-checkout_workingdir:
+          filters: *filters
       - integration-test-api-dispatch:
           filters: *filters
           context: api
@@ -256,7 +272,9 @@ workflows:
             - integration-test-checkout_advanced_fetchoptions
             #- integration-test-checkout_advanced_macos
             - integration-test-checkout_advanced_notags
+            - integration-test-checkout_advanced_sourcecaching
             - integration-test-checkout_advanced_tags
+            - integration-test-checkout_advanced_workingdir
             - integration-test-checkout_alpine
             - integration-test-checkout_depth
             - integration-test-checkout_fetchdepth
@@ -265,7 +283,10 @@ workflows:
             #- integration-test-checkout_macos
             - integration-test-checkout_notags
             - integration-test-checkout_path
+            - integration-test-checkout_sourcechching
             - integration-test-checkout_tags
+            - integration-test-checkout_workingdir
+            - integration-test-api-dispatch
           context: orb-publisher
           filters:
             branches:
