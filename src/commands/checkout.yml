@@ -114,16 +114,16 @@ steps:
         fi
 
         # Checkout. SourceCaching? or not.
-        if [ -e "$HOME/project/<< parameters.path >>/.git" ]; then
+        if [ -e "$CIRCLE_WORKING_DIRECTORY/<< parameters.path >>/.git" ]; then
           echo 'Fetching into existing repository'
           existing_repo='true'
-          cd "$HOME/project/<< parameters.path >>"
+          cd "$CIRCLE_WORKING_DIRECTORY/<< parameters.path >>"
           git remote set-url origin "$CIRCLE_REPOSITORY_URL" || true
         else
           echo 'Cloning git repository'
           existing_repo='false'
-          mkdir -p "$HOME/project/<< parameters.path >>"
-          cd "$HOME/project/<< parameters.path >>"
+          mkdir -p "$CIRCLE_WORKING_DIRECTORY/<< parameters.path >>"
+          cd "$CIRCLE_WORKING_DIRECTORY/<< parameters.path >>"
           git clone ${clone_tag_args} --depth << parameters.depth >> $CIRCLE_REPOSITORY_URL .
         fi
 
