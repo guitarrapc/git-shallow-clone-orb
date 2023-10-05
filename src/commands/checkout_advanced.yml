@@ -34,7 +34,7 @@ parameters:
     default: false
   path:
     description: >
-      Checkout directory (default: job working_directory)
+      Checkout directory (default: `~/project`)
     type: string
     default: .
 steps:
