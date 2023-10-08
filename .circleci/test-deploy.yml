@@ -306,7 +306,7 @@ workflows:
           filters: *filters
       - integration-test-checkout_advanced_workingdir:
           filters: *filters
-      # ---- checkout_advanced ----
+      # ---- checkout ----
       - integration-test-checkout:
           filters: *filters
       - integration-test-checkout_alpine:
