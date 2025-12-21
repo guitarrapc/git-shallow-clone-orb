@@ -3,6 +3,50 @@
 
 ## Git-shallow-clone-orb
 
+## Deprecation Notice
+
+This repository will be deprecated and archived on 2025-12-31 09:00 JST (UTC+9).
+After that date, no further updates or maintenance will be provided.
+
+Please migrate your checkout step from this repository’s shallow clone implementation to CircleCI’s official `blobless clone` feature.
+
+**Background**
+
+On September 18, 2025, CircleCI officially released a new
+[faster checkout option](https://circleci.com/changelog/introducing-a-faster-checkout-option/) that supports blobless clone.
+
+With this official support in place, this repository’s shallow clone functionality is no longer necessary.
+
+**How to use Blobless Clone on CircleCI**
+
+You can enable blobless clone by setting the `method` key in your `checkout` step.
+
+```yaml
+jobs:
+  build:
+    steps:
+      - checkout:
+          method: blobless # <- here!
+```
+
+**What is a Blobless Clone?**
+
+A blobless clone fetches the entire commit history while deferring file contents (blobs) until they are actually needed.　Because blobless clone provides better flexibility and efficiency, we strongly recommend switching from shallow clone to blobless clone.
+
+Blobless clone
+
+- Keeps full commit history
+- Downloads file contents only on demand
+- Minimizes initial network transfer
+
+Shallow clone
+
+- Limits commit history
+- Downloads all file contents upfront
+- Can restrict Git operations
+
+Thank you to everyone who used, tested, and contributed to this repository.
+
 ## Usage
 
 See the [orb registry listing](http://circleci.com/orbs/registry/orb/guitarrapc/git-shallow-clone) for usage guidelines.
